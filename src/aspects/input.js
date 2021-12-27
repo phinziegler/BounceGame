@@ -10,6 +10,14 @@ export default class InputHandler {
                 case "ArrowLeft":
                     player.moveLeft();
                     break;
+                    
+                case "ArrowUp":
+                    player.jump();
+                    break;
+
+                case "ArrowDown":
+                    player.fastFall();
+                    break;
             }
         });
         //KEYUP
@@ -17,15 +25,17 @@ export default class InputHandler {
             switch (e.key) {
                 case "ArrowRight":
                     if (player.acceleration.x >= 0) {
-                        player.stop();
+                        player.stopX();
                     }
                     break;
 
                 case "ArrowLeft":
                     if (player.acceleration.x <= 0) {
-                        player.stop();
+                        player.stopX();
                     }
                     break;
+                case "ArrowDown":
+                    player.endFastFall();
             }
         });
 

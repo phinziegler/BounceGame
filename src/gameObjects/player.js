@@ -2,17 +2,20 @@ import Vector from "../tools/vector.js";
 import GameObject from "./gameObject.js";
 
 export default class Player extends GameObject{
-    constructor(canvas, x, y, radius, mass, color) {
+    constructor(canvas, x, y, radius, mass, groundHeight, color) {
         super(canvas, x, y);
         this.color = color;
         this.radius = radius;
-
+        
         this.velocity = new Vector(0,0);
-        this.acceleration = new Vector(0, -9.81);
         this.mass = mass;
-
+        this.groundHeight = groundHeight;
+        
+        this.gravity = -9.81;
         this.accelConst = 10;
-        this.friction = .99;
+        this.friction = .985;
+        
+        this.acceleration = new Vector(0, this.gravity);
     }
 
     draw() {
@@ -30,8 +33,7 @@ export default class Player extends GameObject{
         // Update Velocity
         this.velocity.x = this.velocity.x + (this.acceleration.x * deltaTime);  // v = at
         this.velocity.y = this.velocity.y + (this.acceleration.y * deltaTime);  // v = at
-
-        this.velocity.x = this.velocity.x * this.friction;   // Friction
+        this.velocity.x = this.velocity.x * this.friction;                      // Friction
 
         
         // Update Position... dX = (v0 + v / 2) * t
@@ -41,10 +43,17 @@ export default class Player extends GameObject{
         this.collide();
     }
 
-    stop() {
+    stopX() {
         this.acceleration.x = 0;
     }
-
+    
+    endFastFall() {
+        this.acceleration.y = this.gravity;
+    }
+    
+    fastFall() {
+        this.acceleration.y = this.gravity * 2;
+    }
     moveLeft() {
         this.acceleration.x = -this.accelConst;
     }
@@ -52,6 +61,11 @@ export default class Player extends GameObject{
     moveRight() {
         this.acceleration.x = this.accelConst;
     }
+
+    jump() {
+        this.velocity.y = 100;
+    }
+
 
     collide() {
         this.collideRight();
@@ -76,11 +90,10 @@ export default class Player extends GameObject{
     }
 
     collideGround() {
-        if(this.position.y <= 80) {
-            this.position.y = 80;
+        if(this.position.y <= this.groundHeight + this.radius) {
+            this.position.y = this.groundHeight + this.radius;
+            this.velocity.y *= -.5;
         }
-        this.velocity.y *= 0;
-        // this.acceleration.y = 0;
     }
 
 }
