@@ -13,7 +13,7 @@ export default class Player extends GameObject{
         
         this.gravity = -9.81;
         this.accelConst = 10;
-        this.friction = .985;
+        this.friction = 0.97;
         
         this.acceleration = new Vector(0, this.gravity);
 
@@ -39,15 +39,20 @@ export default class Player extends GameObject{
         const oldVelX = this.velocity.x;
         const oldVelY = this.velocity.y;
 
+        this.deltaTime = deltaTime;
+
         // Update Velocity
         this.velocity.x = this.velocity.x + (this.acceleration.x * deltaTime);  // v = at
         this.velocity.y = this.velocity.y + (this.acceleration.y * deltaTime);  // v = at
         this.velocity.x = this.velocity.x * this.friction;                      // Friction
 
-        
         // Update Position... dX = (v0 + v / 2) * t
         this.position.x = this.position.x + (((oldVelX + this.velocity.x) / 2) * deltaTime);
         this.position.y = this.position.y + (((oldVelY + this.velocity.y) / 2) * deltaTime);
+
+        if(this.velocity.y > 90) {
+            this.endJump();
+        }
         
         this.collide();
     }
@@ -73,15 +78,20 @@ export default class Player extends GameObject{
 
     jump() {
         if(this.canJump) {
-            this.velocity.y = 90;
+            this.velocity.y = 40;
+            this.acceleration.y = 40;
             this.canJump = false;
         }
     }
-
+    endJump() {
+        console.log("ended jump");
+        this.acceleration.y = this.gravity;
+    }
 
     collide() {
         this.collideRight();
         this.collideLeft();
+        this.collideTop();
         this.collideGround();
     }
 
@@ -89,8 +99,7 @@ export default class Player extends GameObject{
         if(this.position.x >= this.gameWidth) {
             this.position.x = this.gameWidth;
             this.velocity.x *= -1;
-            // this.acceleration.x = 0;
-            this.canJump = true;
+            // this.canJump = true;
         }
     }
 
@@ -98,15 +107,22 @@ export default class Player extends GameObject{
         if(this.position.x <= 0) {
             this.position.x = 0;
             this.velocity.x *= -1;
-            // this.acceleration.x = 0;
-            this.canJump = true;
+            // this.canJump = true;
+        }
+    }
+
+    collideTop() {
+        if(this.position.y >= this.gameHeight - this.radius) {
+            this.position.y = this.gameHeight - this.radius;
+            this.velocity.y *= -0.5;
         }
     }
 
     collideGround() {
         if(this.position.y <= this.groundHeight + this.radius) {
             this.position.y = this.groundHeight + this.radius;
-            this.velocity.y *= -.35;
+            this.velocity.y *= -0.35;
+            this.endFastFall();
             this.canJump = true;
         }
     }

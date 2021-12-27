@@ -7,7 +7,7 @@ import Render from "./render.js";
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const groundHeight = 40;
+const groundHeight = 20;
 
 const background = new Background(canvas, groundHeight);
 const P1 = new Player(canvas, 40, 40, 20, 1, groundHeight, "rgb(255, 100, 100)");                // canvas, x, y, radius, mass, color
@@ -26,8 +26,6 @@ let deltaTime = 0;
 function gameLoop(time) {
     deltaTime = (time - lastTime) / 100;
     lastTime = time;
-
-    // console.log(deltaTime);
 
     // call render
     Render.drawObjects(objects);
