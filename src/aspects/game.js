@@ -1,5 +1,6 @@
 import Player from "../gameObjects/player.js";
 import Wall from "../gameObjects/wall.js";
+import Render from "./render.js";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -15,8 +16,8 @@ function gameLoop(time) {
     deltaTime = time - lastTime;
 
     // call render
-    objects.forEach(object => object.draw());
-    
+    Render.drawObjects(objects);
+
     // call position updates
     
     requestAnimationFrame(gameLoop);
