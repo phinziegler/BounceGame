@@ -11,4 +11,8 @@ export default class Wall extends GameObject {
         this.ctx.fillStyle = this.color;
         this.ctx.fillRect(this.position.x - (this.width / 2), 0, this.width, this.gameHeight);
     }
+
+    update() {
+        
+    }
 }
