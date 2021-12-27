@@ -89,7 +89,7 @@ export default class Player extends GameObject{
         if(this.position.x >= this.gameWidth) {
             this.position.x = this.gameWidth;
             this.velocity.x *= -1;
-            this.acceleration.x = 0;
+            // this.acceleration.x = 0;
             this.canJump = true;
         }
     }
@@ -98,7 +98,7 @@ export default class Player extends GameObject{
         if(this.position.x <= 0) {
             this.position.x = 0;
             this.velocity.x *= -1;
-            this.acceleration.x = 0;
+            // this.acceleration.x = 0;
             this.canJump = true;
         }
     }
