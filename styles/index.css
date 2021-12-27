@@ -18,5 +18,5 @@ body {
 #canvas {
     display: block;
     margin: auto;
-    background-color: rgb(197, 197, 197);
+    /* background-color: rgb(197, 197, 197); */
 }

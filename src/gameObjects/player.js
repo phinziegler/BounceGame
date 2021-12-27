@@ -16,6 +16,8 @@ export default class Player extends GameObject{
         this.friction = .985;
         
         this.acceleration = new Vector(0, this.gravity);
+
+        this.canJump = false;
     }
 
     draw() {
@@ -23,6 +25,13 @@ export default class Player extends GameObject{
         this.ctx.beginPath();
         this.ctx.arc(this.position.x, this.gameHeight - this.position.y, this.radius, 0, Math.PI * 2);    // draw circle
         this.ctx.fill();
+
+        if(!this.canJump) {
+            this.ctx.fillStyle = "rgba(0,0,0,.2)";
+            this.ctx.beginPath();
+            this.ctx.arc(this.position.x, this.gameHeight - this.position.y, this.radius, 0, Math.PI * 2);    // draw circle
+            this.ctx.fill();
+        }
     }
 
     update(deltaTime) {
@@ -52,7 +61,7 @@ export default class Player extends GameObject{
     }
     
     fastFall() {
-        this.acceleration.y = this.gravity * 2;
+        this.acceleration.y = this.gravity * 4;
     }
     moveLeft() {
         this.acceleration.x = -this.accelConst;
@@ -63,7 +72,10 @@ export default class Player extends GameObject{
     }
 
     jump() {
-        this.velocity.y = 100;
+        if(this.canJump) {
+            this.velocity.y = 90;
+            this.canJump = false;
+        }
     }
 
 
@@ -78,6 +90,7 @@ export default class Player extends GameObject{
             this.position.x = this.gameWidth;
             this.velocity.x *= -1;
             this.acceleration.x = 0;
+            this.canJump = true;
         }
     }
 
@@ -86,13 +99,15 @@ export default class Player extends GameObject{
             this.position.x = 0;
             this.velocity.x *= -1;
             this.acceleration.x = 0;
+            this.canJump = true;
         }
     }
 
     collideGround() {
         if(this.position.y <= this.groundHeight + this.radius) {
             this.position.y = this.groundHeight + this.radius;
-            this.velocity.y *= -.5;
+            this.velocity.y *= -.35;
+            this.canJump = true;
         }
     }
 
