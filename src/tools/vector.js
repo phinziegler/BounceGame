@@ -19,4 +19,15 @@ export default class Vector {
     set y(y) {
         this._y = y;
     }
+
+    magnitude() {
+        return Math.sqrt(Math.pow(this.x,2) + Math.pow(this.y,2));
+    }
+
+    unitVector() {
+        let length = this.magnitude();
+
+        let unitVector = new Vector(this.x / length, this.y / length);
+        return unitVector;
+    }
 }

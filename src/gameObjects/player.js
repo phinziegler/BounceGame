@@ -2,7 +2,7 @@ import Vector from "../tools/vector.js";
 import GameObject from "./gameObject.js";
 
 export default class Player extends GameObject{
-    constructor(canvas, x, y, mass, radius, groundHeight, color) {
+    constructor(canvas, x, y, mass, radius, groundHeight, color, name = "null") {
         super(canvas, x, y, mass);
         this.color = color;
         this.radius = radius;
@@ -20,6 +20,7 @@ export default class Player extends GameObject{
 
         this.canJump = false;
         this.isJumping = false;
+        this.name = name;
     }
 
     draw() {
@@ -174,21 +175,33 @@ export default class Player extends GameObject{
         objects.forEach(obj => {
             if(obj != this) {
                 let dist = obj.distanceFrom(this.position.x, this.position.y);
-                if(dist < this.radius) {
-                    this.calculateImpulse(obj);
+                if(dist <= this.radius) {
+                    while(dist <= this.radius && this.velocity.magnitude() > 0) {
+                        let unit = this.velocity.unitVector();
+                        this.position.x += -unit.x;
+                        this.position.y += -unit.y;
+                        dist = obj.distanceFrom(this.position.x, this.position.y);
+                        console.log("here");
+                    }
+
+                    let oldx = this.velocity.x;
+                    let oldy = this.velocity.y;
+
+                    this.calculateImpulse(obj, obj.velocity.x, obj.velocity.y);
+                    obj.calculateImpulse(this, oldx, oldy);
                 }
             }
         });
     }
 
     distanceFrom(x, y) {
-        this.position.x = x0;
-        this.position.y = y0;
+        let x0 = this.position.x;
+        let y0 = this.position.y;
 
         let nX = Math.pow(x - x0, 2);
         let nY = Math.pow(y - y0, 2);
 
-        let distance = Math.sqrt(nX + nY);
+        let distance = Math.abs(Math.sqrt(nX + nY)) - this.radius;
         // console.log(distance);
         return distance;
     }

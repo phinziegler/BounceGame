@@ -40,10 +40,10 @@ export default class GameObject {
         throw new Error("distanceFrom() unimplemented");
     }
 
-    calculateImpulse(obj) {
+    calculateImpulse(obj, v2x, v2y) {
         // v1_f = v1_i * [(m1-m2)/(m2+m1)] + v2_i * [(2*m2)/(m2+m1)]
-        let newX = (this.velocity.x * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (obj.velocity.x * ((2 * obj.mass)/(this.mass + obj.mass)));
-        let newY = (this.velocity.y * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (obj.velocity.y * ((2 * obj.mass)/(this.mass + obj.mass)));
+        let newX = (this.velocity.x * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (v2x * ((2 * obj.mass)/(this.mass + obj.mass)));
+        let newY = (this.velocity.y * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (v2y * ((2 * obj.mass)/(this.mass + obj.mass)));
 
         this.velocity.x = newX;
         this.velocity.y = newY;
