@@ -11,11 +11,11 @@ export default class Player extends GameObject{
         this.mass = mass;
         this.groundHeight = groundHeight;
         
-        this.jumpGravity = -981;   // m/s
-        this.gravity = this.jumpGravity * 1.5;
+        this.jumpGravity = -650;   // m/s
+        this.gravity = -981;
         this.accelConst = 1000;  // m/s^2
-        this.friction = .98;   // flat
-        this.jumpForce = 1000;
+        this.friction = .980;   // flat
+        this.jumpForce = 850;
         
         this.acceleration = new Vector(0, this.gravity);
 
@@ -67,7 +67,7 @@ export default class Player extends GameObject{
                 this.earlyJumpEnd = false;
             }
             else {
-                this.acceleration.y = this.gravity * 1 *((this.velocity.y / (this.jumpForce - 200)) + 1);   // INCREASE GRAVITY FOR EARLY JUMP END
+                this.acceleration.y = this.gravity * 1.5 *((this.velocity.y / (this.jumpForce - 200)) + 1);   // INCREASE GRAVITY FOR EARLY JUMP END
             }
         }
 
