@@ -12,14 +12,14 @@ export default class Player extends GameObject{
         this.isJumping = false;
 
         // CONSTANTS
-        this.gravity = -981;        // acceleration due to gravity
-        this.jumpGravity = -650;    // value of gravity during a jump
+        this.gravity = -9.81;       // acceleration due to gravity
+        this.jumpGravity = -6.50;   // value of gravity during a jump
         this.acceleration = new Vector(0, this.gravity);    // (not a constant)s
-        this.accelConst = 1000;     // rate of acceleration when moving left or right
+        this.accelConst = 10;       // rate of acceleration when moving left or right
         this.friction = .980;       // friction
-        this.jumpForce = 850;       // force of jump
-        
-
+        this.jumpForce = 85;        // force of jump
+        this.jumpCutoff = 2;        // velocity value to decide an early jump is done
+        this.fastFallFactor = 3;    // fast fall gravity = gravity * this value
     }
 
     // DRAW
@@ -55,7 +55,7 @@ export default class Player extends GameObject{
         }
         if(this.earlyJumpEnd) {         // Doing early jump end
             
-            if(this.velocity.y <= 100) {    // peak of jump reached
+            if(this.velocity.y <= this.jumpCutoff) {    // peak of jump reached
                 this.earlyJumpEnd = false;
                 if(this.fastFalling) {
                     this.fastFall();        // restore gravity to fast fall gravity
@@ -65,7 +65,7 @@ export default class Player extends GameObject{
                 }
             }
             else {
-                this.acceleration.y = this.gravity * 1.5 *((this.velocity.y / (this.jumpForce - 200)) + 1);   // INCREASE GRAVITY FOR EARLY JUMP END
+                this.acceleration.y = this.gravity * 1.5 *((this.velocity.y / (this.jumpForce * .8)) + 1);   // INCREASE GRAVITY FOR EARLY JUMP END
             }
         }
         
@@ -79,7 +79,7 @@ export default class Player extends GameObject{
     // FAST FALL
     fastFall() {
         this.fastFalling = true;
-        this.acceleration.y = this.gravity * 2;
+        this.acceleration.y = this.gravity * this.fastFallFactor;
     }
     endFastFall() {
         this.fastFalling = false;
@@ -110,14 +110,14 @@ export default class Player extends GameObject{
     }
     holdJump() {
         this.acceleration.y = this.jumpGravity;
-        if(this.velocity.y <= 100) {
+        if(this.velocity.y <= this.jumpCutoff) {
             this.endJump();
             return;
         }
-
     }
     endJump() {
-        if(this.velocity.y > 100) {
+        console.log("endJump");
+        if(this.velocity.y > this.jumpCutoff) {
             this.earlyJumpEnd = true;
         }
         if(this.fastFalling) {

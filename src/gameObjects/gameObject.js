@@ -38,7 +38,7 @@ export default class GameObject {
         throw new Error("update() unimplemented"); 
     }
     
-    // COLLIDE OBJECTS
+    // COLLIDE OBJECTS --- currently has no way of handling a situation where moving along the normal of collision fails or is unoptimal
     collideObject(objects) {
         objects.forEach(obj => {
             if(obj != this) {

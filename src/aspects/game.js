@@ -63,7 +63,7 @@ new InputHandler(player1);
 let lastTime = 0;
 let deltaTime = 0;
 function gameLoop(time) {
-    deltaTime = (time - lastTime) / 1000;
+    deltaTime = (time - lastTime) / 100;
     lastTime = time;
 
     // call render
