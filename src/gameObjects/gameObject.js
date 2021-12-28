@@ -6,7 +6,6 @@ export default class GameObject {
         this.gameWidth = canvas.width;
         this.gameHeight = canvas.height;
         this.ctx = canvas.getContext("2d");
-        this.prevPos = new Vector(x, y);
         this.position = new Vector(x, y);
         this.velocity = new Vector(0, 0);
         this.acceleration = new Vector(0, 0);
@@ -29,27 +28,17 @@ export default class GameObject {
         this._velocity = velocity;
     }
 
+    // how to draw the object
     draw() {
         throw new Error("draw() unimplemented");
     }
 
+    // on frame update
     update() {
         throw new Error("update() unimplemented"); 
     }
-
-    distanceFrom(x, y) {
-        throw new Error("distanceFrom() unimplemented");
-    }
-
-    calculateImpulse(obj, v2x, v2y) {
-        // v1_f = v1_i * [(m1-m2)/(m2+m1)] + v2_i * [(2*m2)/(m2+m1)]
-        let newX = (this.velocity.x * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (v2x * ((2 * obj.mass)/(this.mass + obj.mass)));
-        // let newY = (this.velocity.y * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (v2y * ((2 * obj.mass)/(this.mass + obj.mass)));
-
-        this.velocity.x = newX;
-        // this.velocity.y = newY;
-    }
-
+    
+    // COLLIDE OBJECTS
     collideObject(objects) {
         objects.forEach(obj => {
             if(obj != this) {
@@ -67,15 +56,32 @@ export default class GameObject {
         });
     }
 
+    // shortest distance from this object to an x,y position.
+    distanceFrom(x, y) {
+        throw new Error("distanceFrom() unimplemented");
+    }
+
+    // CALCULATE IMPULSE --- also sets the velocity accordingly
+    calculateImpulse(obj, v2x, v2y) {
+        // v1_f = v1_i * [(m1-m2)/(m2+m1)] + v2_i * [(2*m2)/(m2+m1)]
+        let newX = (this.velocity.x * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (v2x * ((2 * obj.mass)/(this.mass + obj.mass)));
+        // let newY = (this.velocity.y * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (v2y * ((2 * obj.mass)/(this.mass + obj.mass)));
+
+        this.velocity.x = newX;
+        // this.velocity.y = newY;
+    }
+
     // defines how an object handle collisions -- include collideObject in this.
     collide() {
         throw new Error("collide() unimplemented");
     }
 
+    // if the distance parameter is >= to a distance, there is a collision.
     distanceParameter() {
         throw new Error("distanceParameter() unimplemented");
     }
 
+    // called by collide objects when the impulse is ready to be done.
     performImpulse(obj) {
         let oldx = this.velocity.x;
         let oldy = this.velocity.y;
