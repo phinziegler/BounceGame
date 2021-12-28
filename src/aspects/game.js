@@ -63,8 +63,8 @@ new InputHandler(player1);
 let lastTime = 0;
 let deltaTime = 0;
 function gameLoop(time) {
-    lastTime = time;
     deltaTime = (time - lastTime) / 1000;
+    lastTime = time;
 
     // call render
     Render.drawObjects(objects);
