@@ -77,6 +77,10 @@ export default class Player extends GameObject{
         this.position.y = this.position.y + (((oldVelY + this.velocity.y) / 2) * deltaTime);
         
         this.collide(objects);
+
+        if(this.name == "player2") {
+            console.log(this.velocity.x);
+        }
     }
 
     stopX() {
@@ -176,12 +180,15 @@ export default class Player extends GameObject{
             if(obj != this) {
                 let dist = obj.distanceFrom(this.position.x, this.position.y);
                 if(dist <= this.radius) {
-                    while(dist <= this.radius && this.velocity.magnitude() > 0) {
-                        let unit = this.velocity.unitVector();
-                        this.position.x += -unit.x;
-                        this.position.y += -unit.y;
-                        dist = obj.distanceFrom(this.position.x, this.position.y);
-                        console.log("here");
+                    if(this.velocity.x > 0) {
+                        console.log(this.velocity.x > 0);
+                        while(dist <= this.radius) {
+                            let unit = this.velocity.unitVector();
+                            this.position.x += -unit.x;
+                            this.position.y += -unit.y;
+                            dist = obj.distanceFrom(this.position.x, this.position.y);
+                            console.log("here");
+                        }
                     }
 
                     let oldx = this.velocity.x;

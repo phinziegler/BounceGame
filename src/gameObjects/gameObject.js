@@ -46,6 +46,6 @@ export default class GameObject {
         let newY = (this.velocity.y * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (v2y * ((2 * obj.mass)/(this.mass + obj.mass)));
 
         this.velocity.x = newX;
-        this.velocity.y = newY;
+        // this.velocity.y = newY;
     }
 }
