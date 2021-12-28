@@ -1,3 +1,4 @@
+import Vector from "../tools/vector.js";
 import GameObject from "./gameObject.js";
 
 export default class Wall extends GameObject {
@@ -88,5 +89,10 @@ export default class Wall extends GameObject {
                 }
             }
         });
+    }
+
+    collisionNormal(x, y) {
+        let normal = new Vector(x - this.position.x, 0);
+        return normal.unitVector();
     }
 }

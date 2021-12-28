@@ -52,6 +52,7 @@ export default class Player extends GameObject{
         this.velocity.y = this.velocity.y + (this.acceleration.y * deltaTime);  // v = at
         this.velocity.x = this.velocity.x * this.friction;                      // Friction
         
+        // Handle Jumping Settings
         if(this.isJumping) {
             this.holdJump(deltaTime);
         }
@@ -73,6 +74,9 @@ export default class Player extends GameObject{
         }
         
         // Update Position... dX = (v0 + v / 2) * t
+        this.prevPos.x = this.position.x;
+        this.prevPos.y = this.position.y;
+
         this.position.x = this.position.x + (((oldVelX + this.velocity.x) / 2) * deltaTime);
         this.position.y = this.position.y + (((oldVelY + this.velocity.y) / 2) * deltaTime);
         
@@ -153,6 +157,8 @@ export default class Player extends GameObject{
             this.velocity.x *= -1;
             // this.canJump = true;
         }
+
+
     }
 
     collideTop() {
@@ -176,24 +182,41 @@ export default class Player extends GameObject{
             if(obj != this) {
                 let dist = obj.distanceFrom(this.position.x, this.position.y);
                 if(dist <= this.radius) {
-                    if(this.velocity.x != 0) {
-                        while(dist <= this.radius) {
-                            let unit = this.velocity.unitVector();
-                            this.position.x += -unit.x;
-                            this.position.y += -unit.y;
-                            dist = obj.distanceFrom(this.position.x, this.position.y);
-                            console.log("here");
-                        }
+                    // if(this.velocity.x != 0) {
+                    //     while(dist <= this.radius) {
+                    //         let unit = this.velocity.unitVector();
+                    //         this.position.x += -unit.x;
+                    //         this.position.y += -unit.y;
+                    //         dist = obj.distanceFrom(this.position.x, this.position.y);
+                    //         console.log("here");
+                    //     }
+                    // }
+                    let normal = obj.collisionNormal(this.position.x, this.position.y);
+                    while(dist <= this.radius) {
+                        this.position.x += normal.x;
+                        this.position.y += normal.y;
+                        dist = obj.distanceFrom(this.position.x, this.position.y);
                     }
 
-                    let oldx = this.velocity.x;
-                    let oldy = this.velocity.y;
+                    // let prevDist = obj.distanceFrom(this.prevPos.x, this.prevPos.y);
+                    // if(prevDist < this.radius) {
+                    //     this.position.x = this.prevPos.x;
+                    //     this.position.y = this.prevPos.y;
+                    // }
 
-                    this.calculateImpulse(obj, obj.velocity.x, obj.velocity.y);
-                    obj.calculateImpulse(this, oldx, oldy);
+
+
+                    this.performImpulse(obj);
                 }
             }
         });
+    }
+
+    performImpulse(obj) {
+        let oldx = this.velocity.x;
+        let oldy = this.velocity.y;
+        this.calculateImpulse(obj, obj.velocity.x, obj.velocity.y);
+        obj.calculateImpulse(this, oldx, oldy);
     }
 
     distanceFrom(x, y) {
@@ -206,6 +229,12 @@ export default class Player extends GameObject{
         let distance = Math.abs(Math.sqrt(nX + nY)) - this.radius;
         // console.log(distance);
         return distance;
+    }
+
+    // returns the vector from this.pos to an incoming pos
+    collisionNormal(x, y) {
+        let normal = new Vector(x - this.position.x, y - this.position.y);
+        return normal.unitVector();   
     }
 
 }

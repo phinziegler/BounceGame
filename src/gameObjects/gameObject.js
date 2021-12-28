@@ -6,6 +6,7 @@ export default class GameObject {
         this.gameWidth = canvas.width;
         this.gameHeight = canvas.height;
         this.ctx = canvas.getContext("2d");
+        this.prevPos = new Vector(x, y);
         this.position = new Vector(x, y);
         this.velocity = new Vector(0, 0);
         this.acceleration = new Vector(0, 0);
@@ -47,5 +48,10 @@ export default class GameObject {
 
         this.velocity.x = newX;
         // this.velocity.y = newY;
+    }
+
+    // Returns the normal vector of a collision (points in the direction a colliding object should move to escape contact)
+    collisionNormal(x, y) {
+        throw new Error("collisionNormal() unimplemented");
     }
 }
