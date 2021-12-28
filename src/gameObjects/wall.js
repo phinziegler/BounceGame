@@ -23,7 +23,6 @@ export default class Wall extends GameObject {
         
         // Update Velocity
         this.velocity.x = this.velocity.x + (this.acceleration.x * deltaTime);  // v = at
-        // this.velocity.y = this.velocity.y + (this.acceleration.y * deltaTime);  // v = at
         this.velocity.x = this.velocity.x * this.friction;
         
         // Update Position... dX = (v0 + v / 2) * t
@@ -44,8 +43,6 @@ export default class Wall extends GameObject {
     collide(objects) {
         this.collideRight();
         this.collideLeft();
-        // this.collideTop();
-        // this.collideGround();
         this.collideObject(objects);
     }
 
@@ -53,7 +50,6 @@ export default class Wall extends GameObject {
         if(this.position.x >= this.gameWidth) {
             this.position.x = this.gameWidth;
             this.velocity.x *= -1;
-            // this.canJump = true;
         }
     }
 
@@ -61,34 +57,11 @@ export default class Wall extends GameObject {
         if(this.position.x <= 0) {
             this.position.x = 0;
             this.velocity.x *= -1;
-            // this.canJump = true;
         }
     }
 
-    collideObject(objects) {
-        objects.forEach(obj => {
-            if(obj != this) {
-                let dist = obj.distanceFrom(this.position.x, this.position.y);
-                if(dist <= this.radius) {
-                    if(this.velocity.x != 0) {
-                        console.log(this.velocity.x != 0);
-                        while(dist <= this.radius) {
-                            let unit = this.velocity.unitVector();
-                            this.position.x += -unit.x;
-                            this.position.y += -unit.y;
-                            dist = obj.distanceFrom(this.position.x, this.position.y);
-                            console.log("here");
-                        }
-                    }
-
-                    let oldx = this.velocity.x;
-                    let oldy = this.velocity.y;
-
-                    this.calculateImpulse(obj, obj.velocity.x, obj.velocity.y);
-                    obj.calculateImpulse(this, oldx, oldy);
-                }
-            }
-        });
+    distanceParameter() {
+        return this.width/2;
     }
 
     collisionNormal(x, y) {

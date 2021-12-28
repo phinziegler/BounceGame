@@ -177,46 +177,8 @@ export default class Player extends GameObject{
         }
     }
 
-    collideObject(objects) {
-        objects.forEach(obj => {
-            if(obj != this) {
-                let dist = obj.distanceFrom(this.position.x, this.position.y);
-                if(dist <= this.radius) {
-                    // if(this.velocity.x != 0) {
-                    //     while(dist <= this.radius) {
-                    //         let unit = this.velocity.unitVector();
-                    //         this.position.x += -unit.x;
-                    //         this.position.y += -unit.y;
-                    //         dist = obj.distanceFrom(this.position.x, this.position.y);
-                    //         console.log("here");
-                    //     }
-                    // }
-                    let normal = obj.collisionNormal(this.position.x, this.position.y);
-                    while(dist <= this.radius) {
-                        this.position.x += normal.x;
-                        this.position.y += normal.y;
-                        dist = obj.distanceFrom(this.position.x, this.position.y);
-                    }
-
-                    // let prevDist = obj.distanceFrom(this.prevPos.x, this.prevPos.y);
-                    // if(prevDist < this.radius) {
-                    //     this.position.x = this.prevPos.x;
-                    //     this.position.y = this.prevPos.y;
-                    // }
-
-
-
-                    this.performImpulse(obj);
-                }
-            }
-        });
-    }
-
-    performImpulse(obj) {
-        let oldx = this.velocity.x;
-        let oldy = this.velocity.y;
-        this.calculateImpulse(obj, obj.velocity.x, obj.velocity.y);
-        obj.calculateImpulse(this, oldx, oldy);
+    distanceParameter() {
+        return this.radius;
     }
 
     distanceFrom(x, y) {
