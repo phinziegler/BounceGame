@@ -65,13 +65,16 @@ export default class Wall extends GameObject {
         objects.forEach(obj => {
             if(obj != this) {
                 let dist = obj.distanceFrom(this.position.x, this.position.y);
-                if(dist <= (this.width / 2)) {
-                    while(dist <= this.radius && this.velocity.magnitude() > 0) {
-                        let unit = this.velocity.unitVector();
-                        this.position.x += -unit.x;
-                        this.position.y += -unit.y;
-                        dist = obj.distanceFrom(this.position.x, this.position.y);
-                        console.log("here");
+                if(dist <= this.radius) {
+                    if(this.velocity.x != 0) {
+                        console.log(this.velocity.x != 0);
+                        while(dist <= this.radius) {
+                            let unit = this.velocity.unitVector();
+                            this.position.x += -unit.x;
+                            this.position.y += -unit.y;
+                            dist = obj.distanceFrom(this.position.x, this.position.y);
+                            console.log("here");
+                        }
                     }
 
                     let oldx = this.velocity.x;

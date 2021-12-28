@@ -15,9 +15,9 @@ const P2 = new Player(canvas, 1460, 40, 1, 20, groundHeight, "rgb(100, 255, 100)
 const wall = new Wall(canvas, (canvas.width / 2),0, 5, 15, "rgb(100,100,100)");     // canvas, x, y, mass, width, color
 
 let objects = [
+    wall,
     P2,
     P1,
-    wall,
 ];
 let backgrounds = [background,];
 
