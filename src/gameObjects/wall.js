@@ -5,7 +5,7 @@ export default class Wall extends GameObject {
         super(canvas, x, y, mass);
         this.color = color;
         this.width = width;
-        this.friction = 1;
+        this.friction = .998;
     }
 
     draw() {
@@ -23,8 +23,11 @@ export default class Wall extends GameObject {
         // Update Velocity
         this.velocity.x = this.velocity.x + (this.acceleration.x * deltaTime);  // v = at
         // this.velocity.y = this.velocity.y + (this.acceleration.y * deltaTime);  // v = at
-        this.velocity.x = this.velocity.x * this.friction;  
+        this.velocity.x = this.velocity.x * this.friction;
+        
         // Update Position... dX = (v0 + v / 2) * t
+        this.prevPos.x = this.position.x;
+        this.prevPos.y = this.position.y;
         this.position.x = this.position.x + (((oldVelX + this.velocity.x) / 2) * deltaTime);
         this.position.y = this.position.y + (((oldVelY + this.velocity.y) / 2) * deltaTime);
 
