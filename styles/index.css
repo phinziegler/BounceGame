@@ -14,7 +14,7 @@
 body {
     background-color: rgba(0, 0, 0, 1);
     color: white;
-    font-family: 'Courier New', Courier, monospace;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: center;
 }
 
@@ -43,7 +43,8 @@ body {
 
 /* SIDEPANEL */
 #sidepanel {
-    /* z-index: 10; */
+    color: white;
+    text-align: left;
     position: fixed;
     left: calc(var(--panelBorderWidth) - var(--panelWidth));
     width: var(--panelWidth);
@@ -56,9 +57,9 @@ body {
     line-height: 1.6rem;
 
     /* Colors */
-    border-right: var(--panelBorderWidth) solid grey;
-    box-shadow: darkgrey 6px 0px 0px;
-    background-color: lightgrey;
+    border-right: var(--panelBorderWidth) solid rgb(37, 37, 37);
+    box-shadow: rgb(61, 61, 61) 6px 0px 0px;
+    background-color: rgb(20, 20, 20);
 }
 /* hide scrollbar */
 #sidepanel::-webkit-scrollbar {
@@ -83,7 +84,7 @@ body {
     margin-top: 15px;
     margin-bottom: 25px;
 
-    border: 1px solid black;
+    border: 1px solid rgb(255, 255, 255);
     opacity: 40%;
 }
 
@@ -116,5 +117,5 @@ body {
     border-radius: 20px 20px 0 0;
 
     text-align: center;
-    background-color: darkgrey;
+    background-color: rgb(36, 36, 36);
 }
