@@ -4,32 +4,67 @@ import Wall from "../gameObjects/wall.js";
 import InputHandler from "./input.js";
 import Render from "./render.js";
 
+
+// INIT
 const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
 const groundHeight = 20;
-
 const background = new Background(canvas, groundHeight);
-const P1 = new Player(canvas, 40, 40, 1, 20, groundHeight, "rgb(255, 100, 100)", "player1");   // canvas, x, y, mass, radius, color
-const P2 = new Player(canvas, 1460, 40, 1, 20, groundHeight, "rgb(100, 100, 255)", "player2");   // canvas, x, y, mass, radius, color
-const wall = new Wall(canvas, (canvas.width / 2),0, 5, 15, "rgb(100,100,100)");     // canvas, x, y, mass, width, color
 
+// Player 1
+let player1 = new Player(
+    canvas,                 // canvas
+    40,                     // x
+    40,                     // y
+    1,                      // mass
+    20,                     // radius
+    groundHeight,           // groundHeight
+    "rgb(255, 100, 100)",   // color
+    "player1"               // name
+);
+
+// Player 2
+let player2 = new Player(
+    canvas,                 // canvas
+    1460,                     // x
+    40,                     // y
+    1,                      // mass
+    20,                     // radius
+    groundHeight,           // groundHeight
+    "rgb(100, 100, 255)",   // color
+    "player2"               // name
+);
+
+// Wall
+let wall = new Wall(
+    canvas,                 // canvas
+    (canvas.width / 2),     // x
+    0,                      // y
+    5,                      // mass
+    15,                     // width
+    "rgb(100,100,100)",     // color
+);    
+
+// GAME OBJECTS
 let objects = [
     wall,
-    P2,
-    P1,
+    player2,
+    player1,
 ];
-let backgrounds = [background,];
 
-new InputHandler(P1);
+// BACKGROUND OBJECTS
+let backgrounds = [
+    background,
+];
 
-// Game Loop
+// INPUT HANDLER
+new InputHandler(player1);
+
+// GAME LOOP
 let lastTime = 0;
 let deltaTime = 0;
 function gameLoop(time) {
-    // console.log(time / 1000);
-    deltaTime = (time - lastTime) / 1000;
     lastTime = time;
+    deltaTime = (time - lastTime) / 1000;
 
     // call render
     Render.drawObjects(objects);
@@ -42,9 +77,10 @@ function gameLoop(time) {
         }
     });
     
+    // repeat loop
     requestAnimationFrame(gameLoop);
 }
 
 
-// Game Init
+// LOOP CALL
 gameLoop(0);
