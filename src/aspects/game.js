@@ -14,9 +14,9 @@ const P1 = new Player(canvas, 40, 40, 20, 1, groundHeight, "rgb(255, 100, 100)")
 const wall = new Wall(canvas, (canvas.width / 2), 0, 15, "rgb(100,100,100)");   // canvas, x, y, width, color
 let objects = [
     wall,
-    background,
     P1,
 ];
+let backgrounds = [background,];
 
 new InputHandler(P1);
 
@@ -30,11 +30,12 @@ function gameLoop(time) {
 
     // call render
     Render.drawObjects(objects);
+    Render.drawBackground(backgrounds);
 
     // call position updates
     objects.forEach(obj => {
         if (typeof obj.update === "function") { 
-            obj.update(deltaTime);
+            obj.update(deltaTime, objects);
         }
     });
     

@@ -5,13 +5,15 @@ ctx.fillRect(0,0,canvas.width, canvas.height);
 
 export default class Render {
     constructor() {
-    }
-
-
-    
+    }    
     static drawObjects(objectList) {
         ctx.fillStyle = "rgba(190,190,190,1)";
         ctx.fillRect(0,0,canvas.width, canvas.height);
+        objectList.forEach(object => {
+            object.draw();
+        });
+    }
+    static drawBackground(objectList) {
         objectList.forEach(object => {
             object.draw();
         });

@@ -7,9 +7,16 @@ export default class GameObject {
         this.gameHeight = canvas.height;
         this.ctx = canvas.getContext("2d");
         this.position = new Vector(x, y);
+        this.velocity = new Vector(0, 0);
+        this.acceleration = new Vector(0, 0);
     }
 
     draw() {
         throw new Error("draw() unimplemented");
+    }
+
+    distanceFrom(x, y) {
+        throw new Error("distanceFrom(x, y) unimplemented");
+
     }
 }

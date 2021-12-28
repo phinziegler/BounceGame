@@ -15,4 +15,10 @@ export default class Wall extends GameObject {
     update() {
         
     }
+
+    distanceFrom(x, y) {
+        let left = Math.abs(this.position.x - (this.width / 2) - x);
+        let right = Math.abs(this.position.x + (this.width / 2) - x);
+        return Math.min(left,right);
+    }
 }

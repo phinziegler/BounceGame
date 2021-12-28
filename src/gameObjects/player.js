@@ -7,7 +7,6 @@ export default class Player extends GameObject{
         this.color = color;
         this.radius = radius;
         
-        this.velocity = new Vector(0,0);
         this.mass = mass;
         this.groundHeight = groundHeight;
         
@@ -37,7 +36,7 @@ export default class Player extends GameObject{
         }
     }
 
-    update(deltaTime) {
+    update(deltaTime, objects) {
 
         // console.log(this.acceleration.y);
 
@@ -75,7 +74,7 @@ export default class Player extends GameObject{
         this.position.x = this.position.x + (((oldVelX + this.velocity.x) / 2) * deltaTime);
         this.position.y = this.position.y + (((oldVelY + this.velocity.y) / 2) * deltaTime);
         
-        this.collide();
+        this.collide(objects);
     }
 
     stopX() {
@@ -130,11 +129,12 @@ export default class Player extends GameObject{
         }
     }
 
-    collide() {
+    collide(objects) {
         this.collideRight();
         this.collideLeft();
         this.collideTop();
         this.collideGround();
+        this.collideObject(objects);
     }
 
     collideRight() {
@@ -167,6 +167,37 @@ export default class Player extends GameObject{
             this.canJump = true;
             // this.acceleration.y = gravity;
         }
+    }
+
+    collideObject(objects) {
+        objects.forEach(obj => {
+            if(obj != this) {
+                let dist = obj.distanceFrom(this.position.x, this.position.y);
+                if(dist < this.radius) {
+                    // Collision!
+                    this.calculateImpulse(obj);
+                }
+            }
+        });
+    }
+
+    calculateImpulse(obj) {
+        let myMomentum = new Vector(this.velocity.x * this.mass, this.velocity.y * this.mass);
+        let itMomentum = new Vector(obj.velocity.x * obj.mass, obj.velocity.y * obj.mass);
+        console.log("collide");
+        return;
+    }
+
+    distanceFrom(x, y) {
+        this.position.x = x0;
+        this.position.y = y0;
+
+        let nX = Math.pow(x - x0, 2);
+        let nY = Math.pow(y - y0, 2);
+
+        let distance = Math.sqrt(nX + nY);
+        console.log(distance);
+        return distance;
     }
 
 }

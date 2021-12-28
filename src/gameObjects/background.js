@@ -12,4 +12,8 @@ export default class Background extends GameObject {
         this.ctx.fillStyle = "grey";
         this.ctx.fillRect(0, this.position.y + lineWidth, this.gameWidth, this.gameHeight);
     }
+
+    distanceFrom(x, y) {
+        return Math.abs(this.position.y - y);
+    }
 }
