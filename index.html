@@ -1,18 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bounce Game</title>
 
+    <!-- <link rel="stylesheet" href="styles/sidepanel.css"> -->
     <link rel="stylesheet" href="styles/index.css">
+    <script src="src/sidepanel.js" defer></script>
     <script type="module" src="src/aspects/game.js" defer></script>
+
+    <script src="https://kit.fontawesome.com/73970ed689.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
     <div id="intro">
         <h1>Bounce Game</h1>
     </div>
-    <canvas width="1500"height="800"id="canvas"></canvas>
+
+    <!-- <canvas width="1500" height="800" id="canvas"></canvas> -->
+
+
+    <!-- SIDEPANEL -->
+    <div id="sidepanel">
+
+        <!-- HEADING 1 -->
+        <h2 class="panelHeader">Heading 1</h2>
+        <hr class="panelHR">
+        <p class="panelText">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta eos, aut praesentium laboriosam qui ad totam
+            culpa voluptatum aspernatur perferendis error modi nesciunt, iure rerum expedita eaque accusantium dolorem
+            voluptas distinctio debitis veritatis eligendi odio? Eius numquam porro error aliquam.
+        </p>
+
+        <!-- HEADING 2 -->
+        <h2 class="panelHeader">Heading 2</h2>
+        <hr class="panelHR">
+        <p class="panelText">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus eum necessitatibus distinctio itaque
+            doloribus earum accusamus vero modi, recusandae, harum libero excepturi! Ut amet commodi excepturi fugit
+            perferendis, corrupti dolores?
+        </p>
+
+        <!-- LINKS -->
+        <h2 class="panelHeader">Links</h2>
+        <hr class="panelHR">
+
+        <!-- repo link -->
+        <p class="panelLink">
+            <i class="fab fa-github"></i> <a target="_blank" href="#">Repository</a>
+        </p>
+
+        <!-- email link -->
+        <p class="panelLink">
+            <i class="far fa-envelope"></i> <a href="mailto: phinziegler@gmail.com"
+                target="_blank">phinziegler@gmail.com</a>
+        </p>
+
+        <!-- portfolio link -->
+        <p class="panelLink">
+            <i class="fas fa-folder-open"></i> <a href="https://phinziegler.github.io/Web_Portfolio/"
+                target="_blank">Portfolio</a>
+        </p>
+        <div id="panelFooter">&copy; Phineas Ziegler, 2021</div>
+    </div>
+
+    <!-- SIDEPANEL BUTTON -->
+    <i id="panelToggle" class="fas fa-chevron-right"></i>
 </body>
+
 </html>

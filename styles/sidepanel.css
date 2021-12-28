@@ -1,7 +1,11 @@
+/* Phineas Ziegler, "Easy Sidepanel" */
+
+/* BASIC SETTINGS */
 * {
-    box-sizing: border-box;
-    margin: 0px;
     padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* VARIABLES -- Change these settings. */
@@ -9,20 +13,6 @@
     --panelWidth: 500px;
     --panelBorderWidth: 25px;
     --panelTransition: transform .2s;
-}
-
-body {
-    /* background-color: rgba(0, 0, 0, 0); */
-    /* color: white; */
-    font-family: 'Courier New', Courier, monospace;
-    /* text-align: center; */
-}
-
-#canvas {
-    /* z-index: 5; */
-    /* display: block; */
-    /* margin: auto; */
-    /* background-color: rgb(197, 197, 197); */
 }
 
 /* PANEL OPEN/CLOSE BUTTON */
@@ -43,7 +33,7 @@ body {
 
 /* SIDEPANEL */
 #sidepanel {
-    /* z-index: 10; */
+    z-index: 10;
     position: fixed;
     left: calc(var(--panelBorderWidth) - var(--panelWidth));
     width: var(--panelWidth);
