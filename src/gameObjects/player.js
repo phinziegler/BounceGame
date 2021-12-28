@@ -2,7 +2,7 @@ import Vector from "../tools/vector.js";
 import GameObject from "./gameObject.js";
 
 export default class Player extends GameObject{
-    constructor(canvas, x, y, radius, mass, groundHeight, color) {
+    constructor(canvas, x, y, mass, radius, groundHeight, color) {
         super(canvas, x, y, mass);
         this.color = color;
         this.radius = radius;
@@ -40,6 +40,7 @@ export default class Player extends GameObject{
 
         // console.log(this.acceleration.y);
 
+        
         const oldVelX = this.velocity.x;
         const oldVelY = this.velocity.y;
         
@@ -69,7 +70,7 @@ export default class Player extends GameObject{
                 this.acceleration.y = this.gravity * 1.5 *((this.velocity.y / (this.jumpForce - 200)) + 1);   // INCREASE GRAVITY FOR EARLY JUMP END
             }
         }
-
+        
         // Update Position... dX = (v0 + v / 2) * t
         this.position.x = this.position.x + (((oldVelX + this.velocity.x) / 2) * deltaTime);
         this.position.y = this.position.y + (((oldVelY + this.velocity.y) / 2) * deltaTime);
@@ -174,7 +175,6 @@ export default class Player extends GameObject{
             if(obj != this) {
                 let dist = obj.distanceFrom(this.position.x, this.position.y);
                 if(dist < this.radius) {
-                    // Collision!
                     this.calculateImpulse(obj);
                 }
             }

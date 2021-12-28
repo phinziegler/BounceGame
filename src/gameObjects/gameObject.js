@@ -12,22 +12,40 @@ export default class GameObject {
         this.mass = mass;
     }
 
+    get mass() {
+        return this._mass;
+    }
+
+    set mass(mass) {
+        this._mass = mass;
+    }
+
+    get velocity() {
+        return this._velocity;
+    }
+
+    set velocity(velocity) {
+        this._velocity = velocity;
+    }
+
     draw() {
         throw new Error("draw() unimplemented");
     }
 
-    distanceFrom(x, y) {
-        throw new Error("distanceFrom(x, y) unimplemented");
+    update() {
+        throw new Error("update() unimplemented"); 
+    }
 
+    distanceFrom(x, y) {
+        throw new Error("distanceFrom() unimplemented");
     }
 
     calculateImpulse(obj) {
-        let myMomentum = new Vector(this.velocity.x * this.mass, this.velocity.y * this.mass);
-        let itMomentum = new Vector(obj.velocity.x * obj.mass, obj.velocity.y * obj.mass);
-        let myKinetic = new Vector((this.mass * 1/2) * Math.pow(this.velocity.x, 2), (this.mass * 1/2) * Math.pow(this.velocity.y, 2));
-        let itKinetic = new Vector((obj.mass * 1/2) * Math.pow(obj.velocity.x, 2), (obj.mass * 1/2) * Math.pow(obj.velocity.y, 2));
+        // v1_f = v1_i * [(m1-m2)/(m2+m1)] + v2_i * [(2*m2)/(m2+m1)]
+        let newX = (this.velocity.x * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (obj.velocity.x * ((2 * obj.mass)/(this.mass + obj.mass)));
+        let newY = (this.velocity.y * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (obj.velocity.y * ((2 * obj.mass)/(this.mass + obj.mass)));
 
-        myMomentum.x * itMomentum.x;
-        return;
+        this.velocity.x = newX;
+        this.velocity.y = newY;
     }
 }
