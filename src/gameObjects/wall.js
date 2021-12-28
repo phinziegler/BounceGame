@@ -1,8 +1,8 @@
 import GameObject from "./gameObject.js";
 
 export default class Wall extends GameObject {
-    constructor(canvas, x, y, width, color) {
-        super(canvas, x, y);
+    constructor(canvas, x, y, mass, width, color) {
+        super(canvas, x, y, mass);
         this.color = color;
         this.width = width;
     }

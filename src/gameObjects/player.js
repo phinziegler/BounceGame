@@ -3,11 +3,11 @@ import GameObject from "./gameObject.js";
 
 export default class Player extends GameObject{
     constructor(canvas, x, y, radius, mass, groundHeight, color) {
-        super(canvas, x, y);
+        super(canvas, x, y, mass);
         this.color = color;
         this.radius = radius;
         
-        this.mass = mass;
+        // this.mass = mass;
         this.groundHeight = groundHeight;
         
         this.jumpGravity = -650;   // m/s
@@ -181,13 +181,6 @@ export default class Player extends GameObject{
         });
     }
 
-    calculateImpulse(obj) {
-        let myMomentum = new Vector(this.velocity.x * this.mass, this.velocity.y * this.mass);
-        let itMomentum = new Vector(obj.velocity.x * obj.mass, obj.velocity.y * obj.mass);
-        console.log("collide");
-        return;
-    }
-
     distanceFrom(x, y) {
         this.position.x = x0;
         this.position.y = y0;
@@ -196,7 +189,7 @@ export default class Player extends GameObject{
         let nY = Math.pow(y - y0, 2);
 
         let distance = Math.sqrt(nX + nY);
-        console.log(distance);
+        // console.log(distance);
         return distance;
     }
 
