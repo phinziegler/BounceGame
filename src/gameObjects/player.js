@@ -11,13 +11,16 @@ export default class Player extends GameObject{
         this.mass = mass;
         this.groundHeight = groundHeight;
         
-        this.gravity = -9.81;
-        this.accelConst = 10;
-        this.friction = 0.97;
+        this.gravity = -981;   // m/s
+        this.fallGravity = this.gravity * 1.5;
+        this.accelConst = 1000;  // m/s^2
+        this.friction = .98;   // flat
+        this.jumpForce = 1000;
         
-        this.acceleration = new Vector(0, this.gravity);
+        this.acceleration = new Vector(0, this.fallGravity);
 
         this.canJump = false;
+        this.isJumping = false;
     }
 
     draw() {
@@ -36,23 +39,41 @@ export default class Player extends GameObject{
 
     update(deltaTime) {
 
+        console.log(this.acceleration.y);
+
         const oldVelX = this.velocity.x;
         const oldVelY = this.velocity.y;
-
-        this.deltaTime = deltaTime;
-
+        
+        this.deltaTime = deltaTime; // in seconds
+        
         // Update Velocity
         this.velocity.x = this.velocity.x + (this.acceleration.x * deltaTime);  // v = at
         this.velocity.y = this.velocity.y + (this.acceleration.y * deltaTime);  // v = at
         this.velocity.x = this.velocity.x * this.friction;                      // Friction
+        
+        if(this.isJumping) {
+            this.holdJump(deltaTime);
+        }
+        if(this.earlyJumpEnd) {
+            if(this.velocity.y <= 100) {
+                // console.log("done increasing grav");
+                if(this.fastFalling) {
+                    console.log("here");
+                    this.fastFall();
+                }
+                else {
+                    this.acceleration.y = this.fallGravity;
+                }
+                this.earlyJumpEnd = false;
+            }
+            else {
+                this.acceleration.y = this.fallGravity * 1 *((this.velocity.y / (this.jumpForce - 200)) + 1);   // INCREASE GRAVITY FOR EARLY JUMP END
+            }
+        }
 
         // Update Position... dX = (v0 + v / 2) * t
         this.position.x = this.position.x + (((oldVelX + this.velocity.x) / 2) * deltaTime);
         this.position.y = this.position.y + (((oldVelY + this.velocity.y) / 2) * deltaTime);
-
-        if(this.velocity.y > 90) {
-            this.endJump();
-        }
         
         this.collide();
     }
@@ -62,11 +83,15 @@ export default class Player extends GameObject{
     }
     
     endFastFall() {
-        this.acceleration.y = this.gravity;
+        this.fastFalling = false;
+        if(!this.isJumping) {
+            this.acceleration.y = this.fallGravity;
+        }
     }
     
     fastFall() {
-        this.acceleration.y = this.gravity * 4;
+        this.fastFalling = true;
+        this.acceleration.y = this.fallGravity * 2;
     }
     moveLeft() {
         this.acceleration.x = -this.accelConst;
@@ -78,14 +103,31 @@ export default class Player extends GameObject{
 
     jump() {
         if(this.canJump) {
-            this.velocity.y = 40;
-            this.acceleration.y = 40;
+            this.velocity.y = this.jumpForce;
+            this.jumpTime = 0;
             this.canJump = false;
+            this.isJumping = true;
         }
     }
-    endJump() {
-        console.log("ended jump");
+    holdJump(deltaTime) {
+        this.jumpTime += deltaTime;
         this.acceleration.y = this.gravity;
+        if(this.velocity.y <= 100) {
+            this.endJump();
+            return;
+        }
+
+    }
+    endJump() {
+        if(this.velocity.y > 100) {
+            this.earlyJumpEnd = true;
+        }
+        if(this.fastFalling) {
+            this.fastFall();
+        }
+        else {
+            this.acceleration.y = this.fallGravity;
+        }
     }
 
     collide() {
@@ -122,8 +164,8 @@ export default class Player extends GameObject{
         if(this.position.y <= this.groundHeight + this.radius) {
             this.position.y = this.groundHeight + this.radius;
             this.velocity.y *= -0.35;
-            this.endFastFall();
             this.canJump = true;
+            // this.acceleration.y = gravity;
         }
     }
 
