@@ -39,7 +39,7 @@ export default class Player extends GameObject{
 
     update(deltaTime) {
 
-        console.log(this.acceleration.y);
+        // console.log(this.acceleration.y);
 
         const oldVelX = this.velocity.x;
         const oldVelY = this.velocity.y;
@@ -58,7 +58,7 @@ export default class Player extends GameObject{
             if(this.velocity.y <= 100) {
                 // console.log("done increasing grav");
                 if(this.fastFalling) {
-                    console.log("here");
+                    // console.log("here");
                     this.fastFall();
                 }
                 else {
@@ -163,7 +163,7 @@ export default class Player extends GameObject{
     collideGround() {
         if(this.position.y <= this.groundHeight + this.radius) {
             this.position.y = this.groundHeight + this.radius;
-            this.velocity.y *= -0.35;
+            this.velocity.y *= -0.2;
             this.canJump = true;
             // this.acceleration.y = gravity;
         }
