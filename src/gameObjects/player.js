@@ -6,23 +6,23 @@ export default class Player extends GameObject{
         super(canvas, x, y, mass);
         this.color = color;
         this.radius = radius;
-        
-        // this.mass = mass;
         this.groundHeight = groundHeight;
-        
-        this.jumpGravity = -650;   // m/s
-        this.gravity = -981;
-        this.accelConst = 1000;  // m/s^2
-        this.friction = .980;   // flat
-        this.jumpForce = 850;
-        
-        this.acceleration = new Vector(0, this.gravity);
-
+        this.name = name;
         this.canJump = false;
         this.isJumping = false;
-        this.name = name;
+
+        // CONSTANTS
+        this.gravity = -981;        // acceleration due to gravity
+        this.jumpGravity = -650;    // value of gravity during a jump
+        this.acceleration = new Vector(0, this.gravity);    // (not a constant)s
+        this.accelConst = 1000;     // rate of acceleration when moving left or right
+        this.friction = .980;       // friction
+        this.jumpForce = 850;       // force of jump
+        
+
     }
 
+    // DRAW
     draw() {
         this.ctx.fillStyle = this.color;
         this.ctx.beginPath();
@@ -37,11 +37,8 @@ export default class Player extends GameObject{
         }
     }
 
+    // FRAME UPDATE
     update(deltaTime, objects) {
-
-        // console.log(this.acceleration.y);
-
-        
         const oldVelX = this.velocity.x;
         const oldVelY = this.velocity.y;
         
@@ -51,22 +48,21 @@ export default class Player extends GameObject{
         this.velocity.x = this.velocity.x + (this.acceleration.x * deltaTime);  // v = at
         this.velocity.y = this.velocity.y + (this.acceleration.y * deltaTime);  // v = at
         this.velocity.x = this.velocity.x * this.friction;                      // Friction
-        
+
         // Handle Jumping Settings
         if(this.isJumping) {
-            this.holdJump(deltaTime);
+            this.holdJump();
         }
-        if(this.earlyJumpEnd) {
-            if(this.velocity.y <= 100) {
-                // console.log("done increasing grav");
+        if(this.earlyJumpEnd) {         // Doing early jump end
+            
+            if(this.velocity.y <= 100) {    // peak of jump reached
+                this.earlyJumpEnd = false;
                 if(this.fastFalling) {
-                    // console.log("here");
-                    this.fastFall();
+                    this.fastFall();        // restore gravity to fast fall gravity
                 }
                 else {
-                    this.acceleration.y = this.gravity;
+                    this.acceleration.y = this.gravity;     // restore gravity to default
                 }
-                this.earlyJumpEnd = false;
             }
             else {
                 this.acceleration.y = this.gravity * 1.5 *((this.velocity.y / (this.jumpForce - 200)) + 1);   // INCREASE GRAVITY FOR EARLY JUMP END
@@ -74,38 +70,36 @@ export default class Player extends GameObject{
         }
         
         // Update Position... dX = (v0 + v / 2) * t
-        this.prevPos.x = this.position.x;
-        this.prevPos.y = this.position.y;
-
         this.position.x = this.position.x + (((oldVelX + this.velocity.x) / 2) * deltaTime);
         this.position.y = this.position.y + (((oldVelY + this.velocity.y) / 2) * deltaTime);
         
         this.collide(objects);
     }
-
-    stopX() {
-        this.acceleration.x = 0;
-    }
     
+    // FAST FALL
+    fastFall() {
+        this.fastFalling = true;
+        this.acceleration.y = this.gravity * 2;
+    }
     endFastFall() {
         this.fastFalling = false;
         if(!this.isJumping) {
             this.acceleration.y = this.gravity;
         }
     }
-    
-    fastFall() {
-        this.fastFalling = true;
-        this.acceleration.y = this.gravity * 2;
-    }
+
+    // MOVEMENT
     moveLeft() {
         this.acceleration.x = -this.accelConst;
     }
-
     moveRight() {
         this.acceleration.x = this.accelConst;
     }
+    stopX() {
+        this.acceleration.x = 0;
+    }
 
+    // JUMPING
     jump() {
         if(this.canJump) {
             this.velocity.y = this.jumpForce;
@@ -114,8 +108,7 @@ export default class Player extends GameObject{
             this.isJumping = true;
         }
     }
-    holdJump(deltaTime) {
-        this.jumpTime += deltaTime;
+    holdJump() {
         this.acceleration.y = this.jumpGravity;
         if(this.velocity.y <= 100) {
             this.endJump();
@@ -135,6 +128,7 @@ export default class Player extends GameObject{
         }
     }
 
+    // COLLISIONS
     collide(objects) {
         this.collideRight();
         this.collideLeft();
@@ -142,45 +136,42 @@ export default class Player extends GameObject{
         this.collideGround();
         this.collideObject(objects);
     }
-
     collideRight() {
         if(this.position.x >= this.gameWidth) {
             this.position.x = this.gameWidth;
             this.velocity.x *= -1;
-            // this.canJump = true;
         }
     }
-
     collideLeft() {
         if(this.position.x <= 0) {
             this.position.x = 0;
             this.velocity.x *= -1;
-            // this.canJump = true;
         }
-
-
     }
-
     collideTop() {
         if(this.position.y >= this.gameHeight - this.radius) {
             this.position.y = this.gameHeight - this.radius;
             this.velocity.y *= -0.5;
         }
     }
-
     collideGround() {
         if(this.position.y <= this.groundHeight + this.radius) {
             this.position.y = this.groundHeight + this.radius;
             this.velocity.y *= -0.2;
             this.canJump = true;
-            // this.acceleration.y = gravity;
         }
     }
 
+    ////////////////////////
+    /// OBJECT COLLISION /// 
+    ////////////////////////
+
+    // parameter used to determine if a distance indicates a collision
     distanceParameter() {
         return this.radius;
     }
 
+    // distance of this object to a set of x,y coordinates
     distanceFrom(x, y) {
         let x0 = this.position.x;
         let y0 = this.position.y;
@@ -189,7 +180,6 @@ export default class Player extends GameObject{
         let nY = Math.pow(y - y0, 2);
 
         let distance = Math.abs(Math.sqrt(nX + nY)) - this.radius;
-        // console.log(distance);
         return distance;
     }
 
