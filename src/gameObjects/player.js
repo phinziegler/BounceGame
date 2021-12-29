@@ -15,7 +15,7 @@ export default class Player extends GameObject{
         this.gravity = -9.81;       // acceleration due to gravity
         this.jumpGravity = -6.50;   // value of gravity during a jump
         this.acceleration = new Vector(0, this.gravity);    // (not a constant)s
-        this.accelConst = 5;       // rate of acceleration when moving left or right
+        this.accelConst = 5;        // rate of acceleration when moving left or right
         this.friction = .999;       // friction
         this.jumpForce = 85;        // force of jump
         this.jumpCutoff = 2;        // velocity value to decide an early jump is done
