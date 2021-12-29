@@ -1,22 +1,22 @@
 export default class InputHandler {
-    constructor(player) {
+    constructor(player, up, left, down, right) {
         
         //KEYDOWN
         document.addEventListener("keydown", (e) => {
             switch (e.key) {
-                case "ArrowRight":
+                case right:
                     player.moveRight();
                     break;
 
-                case "ArrowLeft":
+                case left:
                     player.moveLeft();
                     break;
                     
-                case "ArrowUp":
+                case up:
                     player.jump();
                     break;
 
-                case "ArrowDown":
+                case down:
                     player.fastFall();
                     break;
             }
@@ -25,23 +25,23 @@ export default class InputHandler {
         //KEYUP
         document.addEventListener("keyup", (e) => {
             switch (e.key) {
-                case "ArrowRight":
+                case right:
                     if (player.acceleration.x >= 0) {
                         player.stopX();
                     }
                     break;
 
-                case "ArrowLeft":
+                case left:
                     if (player.acceleration.x <= 0) {
                         player.stopX();
                     }
                     break;
 
-                case "ArrowUp":
+                case up:
                     player.endJump();
                     break;
 
-                case "ArrowDown":
+                case down:
                     player.endFastFall();
                     break;
             }

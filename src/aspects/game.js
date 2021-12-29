@@ -56,8 +56,23 @@ let backgrounds = [
     background,
 ];
 
-// INPUT HANDLER
-new InputHandler(player1);
+// Player 1 Controller
+new InputHandler(
+    player1, 
+    "w",            // up
+    "a",            // left
+    "s",            // down
+    "d",            // right
+);
+
+// Player 2 Controller
+new InputHandler(
+    player2,        
+    "ArrowUp",      // up
+    "ArrowLeft",    // left
+    "ArrowDown",    // down
+    "ArrowRight",   // right
+);
 
 // GAME LOOP
 let lastTime = 0;
