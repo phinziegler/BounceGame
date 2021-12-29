@@ -34,4 +34,22 @@ export default class Vector {
         let unitVector = new Vector(this.x / length, this.y / length);
         return unitVector;
     }
+
+    // might be nice to have a static version of each of these.
+    add(vector) {
+        return new Vector(this.x + vector.x, this.y + vector.y);
+    }
+    sub(vector) {
+        return new Vector(this.x - vector.x, this.y - vector.y);
+    }
+    multiply(fac) {
+        return new Vector(this.x * fac, this.y * fac);
+    }
+    dotProduct(vector) {
+        return (vector.x * this.x) + (vector.y + this.y);
+    }
+    angleWith(vector) { // in radians
+        let t = Math.acos(this.dotProduct(vector) / (this.magnitude() * vector.magnitude()));
+        return t;
+    }
 }

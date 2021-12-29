@@ -50,7 +50,7 @@ export default class GameObject {
                         this.position.y += normal.y;
                         dist = obj.distanceFrom(this.position.x, this.position.y);
                     }
-                    this.performImpulse(obj);
+                    this.performImpulse(obj, normal);
                 }
             }
         });
@@ -62,13 +62,30 @@ export default class GameObject {
     }
 
     // CALCULATE IMPULSE --- also sets the velocity accordingly
-    calculateImpulse(obj, v2x, v2y) {
-        // v1_f = v1_i * [(m1-m2)/(m2+m1)] + v2_i * [(2*m2)/(m2+m1)]
-        let newX = (this.velocity.x * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (v2x * ((2 * obj.mass)/(this.mass + obj.mass)));
-        // let newY = (this.velocity.y * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (v2y * ((2 * obj.mass)/(this.mass + obj.mass)));
+    calculateImpulse(obj, objVelx, objVely, normal) {
 
-        this.velocity.x = newX;
+        let vel1 = this.velocity.magnitude();
+        let vel2 = new Vector(objVelx, objVely).magnitude();
+
+        // v1_f = v1_i * [(m1-m2)/(m2+m1)] + v2_i * [(2*m2)/(m2+m1)]
+        let vf = (vel1 * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (vel2 * ((2 * obj.mass)/(this.mass + obj.mass)));
+
+        // this.velocity.x = newX;
         // this.velocity.y = newY;
+
+        let myNorm = this.collisionNormal(obj.position.x, obj.position.y);
+        console.log(myNorm);
+        console.log("normal =" + normal);
+
+        // FIND the angle b/w myNorm and normal, then direction is a new vector -angle from 
+        myNorm.angleWith(normal);
+
+        // let direction = myNorm.add(normal);
+        // direction = direction.multiply(0.5);
+        // console.log(direction);
+
+        this.velocity.x = vf * direction.x;
+        this.velocity.y = vf * direction.y;
     }
 
     // defines how an object handle collisions -- include collideObject in this.
@@ -82,11 +99,11 @@ export default class GameObject {
     }
 
     // called by collide objects when the impulse is ready to be done.
-    performImpulse(obj) {
+    performImpulse(obj, normal) {
         let oldx = this.velocity.x;
         let oldy = this.velocity.y;
-        this.calculateImpulse(obj, obj.velocity.x, obj.velocity.y);
-        obj.calculateImpulse(this, oldx, oldy);
+        this.calculateImpulse(obj, obj.velocity.x, obj.velocity.y, normal);
+        obj.calculateImpulse(this, oldx, oldy, normal);
     }
 
     // Returns the normal vector of a collision (points in the direction a colliding object should move to escape contact)
