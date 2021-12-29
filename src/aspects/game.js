@@ -39,16 +39,16 @@ let wall = new Wall(
     canvas,                 // canvas
     (canvas.width / 2),     // x
     0,                      // y
-    5,                      // mass
+    .5,                      // mass
     15,                     // width
     "rgb(100,100,100)",     // color
 );    
 
 // GAME OBJECTS
 let objects = [
-    wall,
     player2,
     player1,
+    wall,
 ];
 
 // BACKGROUND OBJECTS

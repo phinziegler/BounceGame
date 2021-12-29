@@ -137,19 +137,19 @@ export default class Player extends GameObject{
         this.collideObject(objects);
     }
     collideRight() {
-        if(this.position.x >= this.gameWidth) {
-            this.position.x = this.gameWidth;
+        if(this.position.x + this.radius > this.gameWidth) {
+            this.position.x = this.gameWidth - this.radius;
             this.velocity.x *= -1;
         }
     }
     collideLeft() {
-        if(this.position.x <= 0) {
-            this.position.x = 0;
+        if(this.position.x - this.radius <= 0) {
+            this.position.x = this.radius;
             this.velocity.x *= -1;
         }
     }
     collideTop() {
-        if(this.position.y >= this.gameHeight - this.radius) {
+        if(this.position.y > this.gameHeight - this.radius) {
             this.position.y = this.gameHeight - this.radius;
             this.velocity.y *= -0.5;
         }
