@@ -27,7 +27,10 @@ export default class Vector {
 
     unitVector() {
         let length = this.magnitude();
-
+        if(length == 0) {
+            console.error("length 0 unit vector");
+            return new Vector(0,0);
+        }
         let unitVector = new Vector(this.x / length, this.y / length);
         return unitVector;
     }

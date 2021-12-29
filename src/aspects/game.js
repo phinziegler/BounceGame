@@ -21,6 +21,17 @@ let player1 = new Player(
     "rgb(255, 100, 100)",   // color
     "player1"               // name
 );
+// Player x
+let playerx = new Player(
+    canvas,                 // canvas
+    41,                     // x
+    600,                     // y
+    1,                      // mass
+    30,                     // radius
+    groundHeight,           // groundHeight
+    "rgb(255, 100, 100)",   // color
+    "playerx"               // name
+);
 
 // Player 2
 let player2 = new Player(
@@ -48,6 +59,7 @@ let wall = new Wall(
 let objects = [
     player2,
     player1,
+    playerx,
     wall,
 ];
 
