@@ -16,7 +16,7 @@ let player1 = new Player(
     40,                     // x
     40,                     // y
     1,                      // mass
-    20,                     // radius
+    30,                     // radius
     groundHeight,           // groundHeight
     "rgb(255, 100, 100)",   // color
     "player1"               // name
@@ -28,7 +28,7 @@ let player2 = new Player(
     1460,                     // x
     40,                     // y
     1,                      // mass
-    20,                     // radius
+    30,                     // radius
     groundHeight,           // groundHeight
     "rgb(100, 100, 255)",   // color
     "player2"               // name
@@ -39,8 +39,8 @@ let wall = new Wall(
     canvas,                 // canvas
     (canvas.width / 2),     // x
     0,                      // y
-    .5,                      // mass
-    15,                     // width
+    2,                      // mass
+    25,                     // width
     "rgb(100,100,100)",     // color
 );    
 
