@@ -39,7 +39,7 @@ let wall = new Wall(
     canvas,                 // canvas
     (canvas.width / 2),     // x
     0,                      // y
-    2,                      // mass
+    10,                      // mass
     25,                     // width
     "rgb(100,100,100)",     // color
 );    
