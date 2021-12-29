@@ -5,6 +5,7 @@ I don't even know what it will be yet, but it'll be something.
 
 ## To Do
 1. Improve the impulse calculation to include the normal vector.
-2. Make the game an actual game.
-3. ????
-4. Profit.
+2. Rework the background object into a generic Background class, and change background.js into floor.js
+4. Make the game an actual game.
+5. ????
+6. Profit.
