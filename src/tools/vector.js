@@ -28,7 +28,7 @@ export default class Vector {
     unitVector() {
         let length = this.magnitude();
         if(length == 0) {
-            console.error("length 0 unit vector");
+            console.trace("length 0 unit vector");
             return new Vector(0,0);
         }
         let unitVector = new Vector(this.x / length, this.y / length);
@@ -37,19 +37,49 @@ export default class Vector {
 
     // might be nice to have a static version of each of these.
     add(vector) {
-        return new Vector(this.x + vector.x, this.y + vector.y);
+        let add = new Vector(this.x + vector.x, this.y + vector.y);
+        return add;
     }
     sub(vector) {
-        return new Vector(this.x - vector.x, this.y - vector.y);
+        let sub = new Vector(this.x - vector.x, this.y - vector.y);
+        return sub;
     }
     multiply(fac) {
-        return new Vector(this.x * fac, this.y * fac);
+        let mult = new Vector(this.x * fac, this.y * fac);
+        return mult;
+    }
+    reverse() {
+        let rev = this.multiply(-1);
+        return rev;
     }
     dotProduct(vector) {
-        return (vector.x * this.x) + (vector.y + this.y);
+        let prod = (vector.x * this.x) + (vector.y + this.y);
+        // console.log(prod);
+        return prod;
     }
     angleWith(vector) { // in radians
-        let t = Math.acos(this.dotProduct(vector) / (this.magnitude() * vector.magnitude()));
+        let me = this.unitVector();
+        let it = vector.unitVector();
+        let cost = me.dotProduct(it);
+
+        // account for floating point errors
+        if(cost > 1) {
+            cost = 1;
+        }
+        if(cost < -1) {
+            cost = -1;
+        }
+
+        let t = Math.acos(cost);
         return t;
+    }
+
+    projectOnto(vector) {
+        let prod = this.dotProduct(vector);
+        let mag = vector.magnitude();
+        let mag2 = Math.pow(mag, 2);
+        let fac = prod / mag2;
+        let out = vector.multiply(fac);
+        return out;
     }
 }

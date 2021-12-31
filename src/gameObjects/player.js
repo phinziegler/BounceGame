@@ -3,11 +3,10 @@ import GameObject from "./gameObject.js";
 
 export default class Player extends GameObject{
     constructor(canvas, x, y, mass, radius, groundHeight, color, name = "null") {
-        super(canvas, x, y, mass);
+        super(canvas, x, y, mass, name);
         this.color = color;
         this.radius = radius;
         this.groundHeight = groundHeight;
-        this.name = name;
         this.canJump = false;
         this.isJumping = false;
 
@@ -116,7 +115,7 @@ export default class Player extends GameObject{
         }
     }
     endJump() {
-        console.log("endJump");
+        // console.log("endJump");
         if(this.velocity.y > this.jumpCutoff) {
             this.earlyJumpEnd = true;
         }
@@ -184,9 +183,19 @@ export default class Player extends GameObject{
     }
 
     // returns the vector from this.pos to an incoming pos
-    collisionNormal(x, y) {
-        let normal = new Vector(x - this.position.x, y - this.position.y);
-        return normal.unitVector();   
+    // surfaceNormalTo(pos) {
+    //     let normal = new Vector(pos.x - this.position.x, pos.y - this.position.y);
+    //     let uNormal = normal.unitVector(); 
+    //     return uNormal;  
+    // }
+
+    positionRelativeTo(obj) {
+        return this.position;
     }
+
+    // takeImpulse(magnitude, velVector) {
+    //     let uVec = velVector.unitVector();
+    //     // let 
+    // }
 
 }

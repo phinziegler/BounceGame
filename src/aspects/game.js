@@ -29,7 +29,7 @@ let playerx = new Player(
     1,                      // mass
     30,                     // radius
     groundHeight,           // groundHeight
-    "rgb(255, 100, 100)",   // color
+    "green",   // color
     "playerx"               // name
 );
 
@@ -53,14 +53,15 @@ let wall = new Wall(
     10,                      // mass
     25,                     // width
     "rgb(100,100,100)",     // color
+    "wall",
 );    
 
 // GAME OBJECTS
 let objects = [
+    wall,
     player2,
     player1,
-    playerx,
-    wall,
+    // playerx,
 ];
 
 // BACKGROUND OBJECTS

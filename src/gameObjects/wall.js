@@ -2,8 +2,8 @@ import Vector from "../tools/vector.js";
 import GameObject from "./gameObject.js";
 
 export default class Wall extends GameObject {
-    constructor(canvas, x, y, mass, width, color) {
-        super(canvas, x, y, mass);
+    constructor(canvas, x, y, mass, width, color, name) {
+        super(canvas, x, y, mass, name);
         this.color = color;
         this.width = width;
 
@@ -20,7 +20,9 @@ export default class Wall extends GameObject {
     // FRAME UPDATE
     update(deltaTime, objects) {
         const oldVelX = this.velocity.x;
-        const oldVelY = this.velocity.y;
+        const oldVelY = 0;
+
+        this.velocity.y = 0;
         
         this.deltaTime = deltaTime; // in seconds
         
@@ -72,8 +74,15 @@ export default class Wall extends GameObject {
     }
     
     // normal direction from the wall to an input point -- returns horizontal normals
-    collisionNormal(x, y) {
-        let normal = new Vector(x - this.position.x, 0);
-        return normal.unitVector();
+    // surfaceNormalTo(obj) {
+    //     let normal = new Vector(pos.x - this.position.x, 0);
+    //     let uNormal = normal.unitVector();
+    //     return uNormal;
+    // }
+
+    positionRelativeTo(obj) {
+        let pos = new Vector(this.position.x, obj.position.y);
+        // console.log(this.name + pos.x + "," + pos.y + obj.name);
+        return pos;
     }
 }
