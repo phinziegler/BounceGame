@@ -60,7 +60,7 @@ export default class GameObject {
                         slower = this;
                     }
                     faster.separate(dist, slower);  // move the faster object out of the slower object
-                    faster.doImpulse(slower);
+                    this.doImpulse(obj);
                 }
             }
         });
