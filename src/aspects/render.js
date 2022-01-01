@@ -1,10 +1,17 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-ctx.fillStyle = "rgba(190,190,190,1)";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
+// ctx.fillStyle = "rgba(190,190,190,1)";
+// ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 export default class Render {
     constructor() {
+    }
+    static preRender() {
+        ctx.fillStyle = "black";
+        ctx.font = "25px monospace";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("press any key to start", canvas.width / 2, canvas.height / 2);
     }
     static drawObjects(objectList) {
         ctx.fillStyle = "rgba(190,190,190,1)";

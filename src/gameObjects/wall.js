@@ -45,14 +45,14 @@ export default class Wall extends GameObject {
         this.collideObject(objects);
     }
     collideRight() {
-        if(this.position.x >= this.gameWidth) {
-            this.position.x = this.gameWidth;
+        if(this.position.x >= this.gameWidth - (this.width / 2)) {
+            this.position.x = this.gameWidth - (this.width / 2);
             this.velocity.x *= -1;
         }
     }
     collideLeft() {
-        if(this.position.x <= 0) {
-            this.position.x = 0;
+        if(this.position.x <= (this.width / 2)) {
+            this.position.x = this.width / 2;
             this.velocity.x *= -1;
         }
     }
