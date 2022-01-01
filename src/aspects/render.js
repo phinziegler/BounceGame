@@ -26,7 +26,7 @@ export default class Render {
         ctx.fillText(fps, canvas.width - text.width - size, size / 2);
     }
     static pause() {
-        ctx.fillStyle = "rgba(0,0,0,.1)";
+        ctx.fillStyle = "rgba(0,0,0,.35)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         Render.pauseSymbol();
     }

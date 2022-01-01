@@ -11,7 +11,6 @@ const groundHeight = 20;
 const background = new Background(canvas, groundHeight);
 
 document.addEventListener("keydown", (e) => {
-    console.log("spacebar");
     if (e.key == " ") {
         togglePause();
     }
@@ -37,7 +36,7 @@ let playerx = new Player(
     canvas,                 // canvas
     40,                     // x
     600,                    // y
-    .5,                      // mass
+    .5,                     // mass
     20,                     // radius
     groundHeight,           // groundHeight
     "green",                // color
@@ -47,7 +46,7 @@ let playerx = new Player(
 // Player 2
 let player2 = new Player(
     canvas,                 // canvas
-    1460,                     // x
+    1460,                   // x
     40,                     // y
     1,                      // mass
     30,                     // radius
