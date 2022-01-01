@@ -10,6 +10,17 @@ const canvas = document.getElementById("canvas");
 const groundHeight = 20;
 const background = new Background(canvas, groundHeight);
 
+document.addEventListener("keydown", (e) => {
+    console.log("spacebar");
+    if (e.key == " ") {
+        togglePause();
+    }
+});
+
+canvas.addEventListener("click", () => {
+    togglePause();
+});
+
 // Player 1
 let player1 = new Player(
     canvas,                 // canvas
@@ -54,7 +65,7 @@ let wall = new Wall(
     25,                     // width
     "rgb(100,100,100)",     // color
     "wall",
-);    
+);
 
 // GAME OBJECTS
 let objects = [
@@ -71,7 +82,7 @@ let backgrounds = [
 
 // Player 1 Controller
 new InputHandler(
-    player1, 
+    player1,
     "w",            // up
     "a",            // left
     "s",            // down
@@ -80,12 +91,23 @@ new InputHandler(
 
 // Player 2 Controller
 new InputHandler(
-    player2,        
+    player2,
     "ArrowUp",      // up
     "ArrowLeft",    // left
     "ArrowDown",    // down
     "ArrowRight",   // right
 );
+
+
+let paused = true;
+// Pause
+function togglePause() {
+    if (paused) {
+        paused = false;
+        return;
+    }
+    paused = true;
+}
 
 // GAME LOOP
 let lastTime = 0;
@@ -99,20 +121,26 @@ function gameLoop(time) {
     lastTime = time;
 
     // Physics
-    objects.forEach(obj => {
-        if (typeof obj.update === "function") { 
-            obj.update(deltaTime, objects);
-        }
-    });
+    if (!paused) {
+        objects.forEach(obj => {
+            if (typeof obj.update === "function") {
+                obj.update(deltaTime, objects);
+            }
+        });
+    }
 
     // Render
     Render.drawObjects(objects);
     Render.drawBackground(backgrounds);
 
+    if(paused) {
+        Render.pause();
+    }
+
     // FPS
     tot += deltaTime;
     counter++;
-    if(counter == frameCount) {
+    if (counter == frameCount) {
         fps = frameCount / (tot / 10);  // divide by 10 to get to seconds.
         tot = 0;
         counter = 0;
