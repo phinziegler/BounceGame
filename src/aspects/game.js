@@ -25,9 +25,9 @@ let player1 = new Player(
 let playerx = new Player(
     canvas,                 // canvas
     40,                     // x
-    600,                     // y
-    1,                      // mass
-    20 ,                     // radius
+    600,                    // y
+    .5,                      // mass
+    20,                     // radius
     groundHeight,           // groundHeight
     "green",                // color
     "playerx"               // name
@@ -59,9 +59,9 @@ let wall = new Wall(
 // GAME OBJECTS
 let objects = [
     wall,
-    player2,
     player1,
-    // playerx,
+    player2,
+    playerx,
 ];
 
 // BACKGROUND OBJECTS
