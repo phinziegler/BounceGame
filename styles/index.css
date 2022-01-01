@@ -17,9 +17,22 @@ body {
     text-align: center;
 }
 
-#canvas {
+#canvasArea {
     display: block;
     margin: auto;
+    /* background-color: red; */
+    line-height: 0;
+    width: 100%;
+}
+
+#fps {
+    color: black;
+    opacity: 50%;
+    line-height: 1.5rem;
+    position: absolute;
+    right: 210px;
+    width: 100px;
+    font-family: monospace;
 }
 
 /* PANEL OPEN/CLOSE BUTTON */

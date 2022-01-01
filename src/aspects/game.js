@@ -87,27 +87,45 @@ new InputHandler(
     "ArrowRight",   // right
 );
 
+let fps = 0; // gameLoopCalls / seconds
+let fpsDisp = document.getElementById("fps");
+function updateFPS(fps) {
+    fpsDisp.innerText = "FPS: " + fps.toFixed(1);
+}
+
 // GAME LOOP
 let lastTime = 0;
 let deltaTime = 0;
+let counter = 0;
+let tot = 0;
 function gameLoop(time) {
     deltaTime = (time - lastTime) / 100;
     lastTime = time;
 
-    // call render
-    Render.drawObjects(objects);
-    Render.drawBackground(backgrounds);
+    tot += deltaTime;
+    counter++;
+    if(counter == 10) {
+        updateFPS(10 / (tot / 10));
+        counter = 0;
+        tot = 0;
+    }
 
-    // call position updates
+    // Physics
     objects.forEach(obj => {
         if (typeof obj.update === "function") { 
             obj.update(deltaTime, objects);
         }
     });
     
+    // Render
+    Render.drawObjects(objects);
+    Render.drawBackground(backgrounds);
+
+
     // repeat loop
     requestAnimationFrame(gameLoop);
 }
+
 
 
 // LOOP CALL
