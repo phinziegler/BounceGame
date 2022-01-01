@@ -143,11 +143,11 @@ export default class GameEngine {
                     obj.update(deltaTime, this.objects);
                 }
             });
+        }
             
             // Render
             Render.drawObjects(this.objects);
             Render.drawBackground(this.backgrounds);
-        }
 
         // Render Pause
         if (this.paused) {
