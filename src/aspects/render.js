@@ -18,5 +18,12 @@ export default class Render {
             object.draw();
         });
     }
+    static fps(fps, size, color) {
+        ctx.fillStyle = color;
+        ctx.font = size + "px monospace";
+        ctx.textBaseline = "hanging";
+        let text = ctx.measureText(fps);
+        ctx.fillText(fps, canvas.width - text.width - size, size / 2);
+    }
 
 }

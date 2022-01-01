@@ -87,28 +87,16 @@ new InputHandler(
     "ArrowRight",   // right
 );
 
-let fps = 0; // gameLoopCalls / seconds
-let fpsDisp = document.getElementById("fps");
-function updateFPS(fps) {
-    fpsDisp.innerText = "FPS: " + fps.toFixed(1);
-}
-
 // GAME LOOP
 let lastTime = 0;
 let deltaTime = 0;
 let counter = 0;
 let tot = 0;
+let fps = 0;
+let frameCount = 20;
 function gameLoop(time) {
     deltaTime = (time - lastTime) / 100;
     lastTime = time;
-
-    tot += deltaTime;
-    counter++;
-    if(counter == 10) {
-        updateFPS(10 / (tot / 10));
-        counter = 0;
-        tot = 0;
-    }
 
     // Physics
     objects.forEach(obj => {
@@ -116,17 +104,24 @@ function gameLoop(time) {
             obj.update(deltaTime, objects);
         }
     });
-    
+
     // Render
     Render.drawObjects(objects);
     Render.drawBackground(backgrounds);
 
+    // FPS
+    tot += deltaTime;
+    counter++;
+    if(counter == frameCount) {
+        fps = frameCount / (tot / 10);  // divide by 10 to get to seconds.
+        tot = 0;
+        counter = 0;
+    }
+    Render.fps("FPS: " + fps.toFixed(1), 14, "rgba(0, 0, 0, .5)");
 
     // repeat loop
     requestAnimationFrame(gameLoop);
 }
-
-
 
 // LOOP CALL
 gameLoop(0);
