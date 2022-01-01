@@ -72,17 +72,9 @@ export default class Wall extends GameObject {
         let right = Math.abs(this.position.x + (this.width / 2) - x);
         return Math.min(left, right);
     }
-    
-    // normal direction from the wall to an input point -- returns horizontal normals
-    // surfaceNormalTo(obj) {
-    //     let normal = new Vector(pos.x - this.position.x, 0);
-    //     let uNormal = normal.unitVector();
-    //     return uNormal;
-    // }
 
     positionRelativeTo(obj) {
         let pos = new Vector(this.position.x, obj.position.y);
-        // console.log(this.name + pos.x + "," + pos.y + obj.name);
         return pos;
     }
 }

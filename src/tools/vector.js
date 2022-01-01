@@ -28,8 +28,8 @@ export default class Vector {
     unitVector() {
         let length = this.magnitude();
         if(length == 0) {
-            console.trace("length 0 unit vector");
-            return new Vector(0,0);
+            console.error("length 0 unit vector");
+            return new Vector(1,1);
         }
         let unitVector = new Vector(this.x / length, this.y / length);
         return unitVector;
@@ -53,8 +53,7 @@ export default class Vector {
         return rev;
     }
     dotProduct(vector) {
-        let prod = (vector.x * this.x) + (vector.y + this.y);
-        // console.log(prod);
+        let prod = (vector.x * this.x) + (vector.y * this.y);
         return prod;
     }
     angleWith(vector) { // in radians

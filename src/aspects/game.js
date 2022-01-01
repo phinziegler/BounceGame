@@ -24,12 +24,12 @@ let player1 = new Player(
 // Player x
 let playerx = new Player(
     canvas,                 // canvas
-    41,                     // x
+    40,                     // x
     600,                     // y
     1,                      // mass
-    30,                     // radius
+    20 ,                     // radius
     groundHeight,           // groundHeight
-    "green",   // color
+    "green",                // color
     "playerx"               // name
 );
 
@@ -50,7 +50,7 @@ let wall = new Wall(
     canvas,                 // canvas
     (canvas.width / 2),     // x
     0,                      // y
-    10,                      // mass
+    10,                     // mass
     25,                     // width
     "rgb(100,100,100)",     // color
     "wall",

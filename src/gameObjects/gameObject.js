@@ -47,123 +47,86 @@ export default class GameObject {
         throw new Error("update() unimplemented");
     }
 
-    // COLLIDE OBJECTS --- currently has no way of handling a situation where moving along the normal of collision fails or is unoptimal
+    // COLLIDE OBJECTS
     collideObject(objects) {
         objects.forEach(obj => {
             if (obj != this) {
                 let dist = obj.distanceFrom(this.position.x, this.position.y);
-                if (dist <= this.distanceParameter()) {
-                    let faster = this;  // the faster object is the one considered to be colliding into the slower object
+                if (dist < this.distanceParameter()) {
+                    let faster = this;
                     let slower = obj;
                     if (this.velocity.magnitude() < obj.velocity.magnitude()) {
                         faster = obj;
                         slower = this;
                     }
-                    faster.separate(dist, slower);
-                    faster.performImpulse(slower);
+                    faster.separate(dist, slower);  // move the faster object out of the slower object
+                    faster.doImpulse(slower);
                 }
             }
         });
     }
-
+    
+    /* SEPARATE --- prevent objects from intersecting before executing an impulse
+    currently has no way of handling a situation where moving along the normal of
+    collision fails or is unoptimal */
     separate(dist, obj) {
-        // console.log(obj.name)
         let normal = obj.surfaceNormalTo(this);
         // let dist = obj.distanceFrom(this.position.x, this.position.y);
-        while (dist <= this.distanceParameter()) {
+        while (dist < this.distanceParameter()) {
             
             this.position.x += normal.x;
             this.position.y += normal.y;
-
+            
             dist = obj.distanceFrom(this.position.x, this.position.y);
         }
     }
+    
+    // DO IMPULSE --- how do the objects react to a collision?
+    doImpulse(obj) {
+        let v1 = this.velocity;
+        let v2 = obj.velocity;
+        let m1 = this.mass;
+        let m2 = obj.mass;
 
-    // called by collide objects when the impulse is ready to be done.
-    performImpulse(obj) {   // obj is the object the faster (this) object is colliding with.
-        // let oldx = this.velocity.x;
-        // let oldy = this.velocity.y;
-        this.doImpulse(obj, obj.velocity.x, obj.velocity.y);
-        // obj.doImpulse(this, oldx, oldy, normal);
-        // this.receiveImpulse;
+
+        // 1 find unit normal and unit tangent vectors
+        let norm = obj.surfaceNormalTo(this);
+        let tan = new Vector(-norm.y, norm.x);
+
+        // 2 find projections of velocity onto tangent and normal
+        let v1n = norm.dotProduct(v1);
+        let v2n = norm.dotProduct(v2);
+
+        let v1t = tan.dotProduct(v1);
+        let v2t = tan.dotProduct(v2);
+
+        // 3 Remember that v1t' = v1t ... 
+
+        // 4 Find new Normal velocities
+        let v1nf = ((v1n * (m1 - m2)) + (2 * m2 * v2n)) / (m1 + m2);
+        let v2nf = ((v2n * (m2 - m1)) + (2 * m1 * v1n)) / (m1 + m2);
+
+        // 5 Convert scalars into vectors
+        let vectorV1nf = norm.multiply(v1nf);
+        let vectorV2nf = norm.multiply(v2nf);
+
+        let vectorV1tf = tan.multiply(v1t);     // remember step 3
+        let vectorV2tf = tan.multiply(v2t);     // remember step 3
+
+        let v1f = vectorV1nf.add(vectorV1tf);
+        let v2f = vectorV2nf.add(vectorV2tf);
+
+        this.velocity = v1f;
+        obj.velocity = v2f;
     }
-
+    
     positionRelativeTo(obj) {
         throw new Error("positionRelativeTo() unimplemented");
     }
-
+    
     // shortest distance from this object to an x,y position.
     distanceFrom(x, y) {
         throw new Error("distanceFrom() unimplemented");
-    }
-
-    // CALCULATE IMPULSE --- also sets the velocity accordingly
-    doImpulse(obj, objVelx, objVely) {
-
-        let oldVel = this.velocity;
-
-        /* conservation of kinetic energy and momentum
-         * v1_f = v1_i * [(m1-m2)/(m2+m1)] + v2_i * [(2*m2)/(m2+m1)] */
-        let vel1 = this.velocity.magnitude();
-        let vel2 = new Vector(objVelx, objVely).magnitude();
-        let vfmag1 = (vel1 * ((this.mass - obj.mass) / (this.mass + obj.mass))) + (vel2 * ((2 * obj.mass) / (this.mass + obj.mass)));
-        let vfmag2 = (vel2 * ((obj.mass - this.mass) / (this.mass + obj.mass))) + (vel1 * ((2 * this.mass) / (this.mass + obj.mass)));
-
-
-
-        let direction = this.bounceDirection(obj);
-
-        // The final direction should be shifted based on how much energy is transfered into the recieving object... EG the ball hits the wall at an upward angle... The balls direction should be shifted slightly towards the wall, since no y energy is consumed by the wall.
-
-        this.velocity.x = direction.x * Math.abs(vfmag1);
-        this.velocity.y = direction.y * Math.abs(vfmag1); // this cannot be right bro
-        // console.log(obj.name + " Y vel = :" + obj.velocity.y);
-        // console.log(this.name + " direction = (" + direction.x.toFixed(2) + ", " + direction.y.toFixed(2) + ")\n" + "old vel y = " + oldy + ", new vel y = " + this.velocity.y);
-
-
-        // SAME AS VFMAG2 --- 
-        // let p1 = vel1 * this.mass;
-        // let p1f = this.velocity.magnitude() * this.mass;
-        // let p2 = vel2 * obj.mass;
-        // let p2f = p1 + p2 - p1f;    // the momentum obj should have with its new velocity values.
-        // let objVelMag = p2f / obj.mass;
-        // --------------------
-
-        // Which direction should the obj move? in the direction opposite its normal?
-        // if(vel2 < vfmag2) { // gained speed
-        let surfNorm = obj.surfaceNormalTo(this);
-        console.log("here");
-        let objDirection = surfNorm.reverse();      // dont reverse direction when the objects are moving at similar speeds??
-
-        if (obj.name = "player2") {
-            console.log
-        }
-        obj.velocity.x = objDirection.x * vfmag2;
-        obj.velocity.y = objDirection.y * vfmag2;
-        // }
-        // else {
-        //     // obj.velocity.x = direction.x * Math.abs(vfmag2);
-        //     // obj.velocity.y = direction.y * Math.abs(vfmag2);
-        // }
-
-        // obj.takeImpulse(vfmag1, oldVelVec.unitVector());
-
-
-    }
-
-    bounceDirection(obj) {
-        let normal = obj.surfaceNormalTo(this);
-        let reversedVel = this.velocity.reverse();
-        let proj = reversedVel.projectOnto(normal.unitVector());
-        let angledProj = normal.unitVector().multiply(proj.magnitude());
-        let v = this.velocity.add(angledProj);
-        let vfinal = v.add(angledProj);
-        let direction = vfinal.unitVector();
-        return direction;
-    }
-
-    takeImpulse(magnitude, velVector) {
-        throw new Error("takeImpulse() unimplemented");
     }
 
     // defines how an object handle collisions -- include collideObject in this.
@@ -182,11 +145,8 @@ export default class GameObject {
         let pos = this.positionRelativeTo(obj);
         let normal = new Vector(obj.position.x - pos.x, obj.position.y - pos.y);
         let uNormal = normal.unitVector();
-
-        if(obj.name == "player1") {
-            console.log(uNormal);
-        }
-
         return uNormal;
     }
+
+
 }
