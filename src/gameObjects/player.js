@@ -1,13 +1,13 @@
 import Vector from "../tools/vector.js";
 import GameObject from "./gameObject.js";
 
-export default class Player extends GameObject{
-    constructor(canvas, x, y, mass, radius, groundHeight, color, name = "null") {
-        super(canvas, x, y, mass, name);
+export default class Player extends GameObject {
+    constructor(canvas, engine, x, y, mass, radius, groundHeight, color, name = "null") {
+        super(canvas, engine, x, y, mass, name);
         this.color = color;
         this.radius = radius;
         this.groundHeight = groundHeight;
-        this.canJump = false;
+        this.canJump = true;
         this.isJumping = false;
 
         // CONSTANTS
@@ -28,7 +28,7 @@ export default class Player extends GameObject{
         this.ctx.arc(this.position.x, this.gameHeight - this.position.y, this.radius, 0, Math.PI * 2);    // draw circle
         this.ctx.fill();
 
-        if(!this.canJump) {
+        if (!this.canJump) {
             this.ctx.fillStyle = "rgba(0,0,0,.2)";
             this.ctx.beginPath();
             this.ctx.arc(this.position.x, this.gameHeight - this.position.y, this.radius, 0, Math.PI * 2);    // draw circle
@@ -40,23 +40,23 @@ export default class Player extends GameObject{
     update(deltaTime, objects) {
         const oldVelX = this.velocity.x;
         const oldVelY = this.velocity.y;
-        
+
         this.deltaTime = deltaTime; // in seconds
-        
+
         // Update Velocity
         this.velocity.x = this.velocity.x + (this.acceleration.x * deltaTime);  // v = at
         this.velocity.y = this.velocity.y + (this.acceleration.y * deltaTime);  // v = at
         this.velocity.x = this.velocity.x * this.friction;                      // Friction
 
         // Handle Jumping Settings
-        if(this.isJumping) {
+        if (this.isJumping) {
             this.holdJump();
         }
-        if(this.earlyJumpEnd) {         // Doing early jump end
-            
-            if(this.velocity.y <= this.jumpCutoff) {    // peak of jump reached
+        if (this.earlyJumpEnd) {         // Doing early jump end
+
+            if (this.velocity.y <= this.jumpCutoff) {    // peak of jump reached
                 this.earlyJumpEnd = false;
-                if(this.fastFalling) {
+                if (this.fastFalling) {
                     this.fastFall();        // restore gravity to fast fall gravity
                 }
                 else {
@@ -64,17 +64,17 @@ export default class Player extends GameObject{
                 }
             }
             else {
-                this.acceleration.y = this.gravity * 1.5 *((this.velocity.y / (this.jumpForce * .8)) + 1);   // INCREASE GRAVITY FOR EARLY JUMP END
+                this.acceleration.y = this.gravity * 1.5 * ((this.velocity.y / (this.jumpForce * .8)) + 1);   // INCREASE GRAVITY FOR EARLY JUMP END
             }
         }
-        
+
         // Update Position... dX = (v0 + v / 2) * t
         this.position.x = this.position.x + (((oldVelX + this.velocity.x) / 2) * deltaTime);
         this.position.y = this.position.y + (((oldVelY + this.velocity.y) / 2) * deltaTime);
-        
+
         this.collide(objects);
     }
-    
+
     // FAST FALL
     fastFall() {
         this.fastFalling = true;
@@ -82,7 +82,7 @@ export default class Player extends GameObject{
     }
     endFastFall() {
         this.fastFalling = false;
-        if(!this.isJumping) {
+        if (!this.isJumping) {
             this.acceleration.y = this.gravity;
         }
     }
@@ -100,7 +100,7 @@ export default class Player extends GameObject{
 
     // JUMPING
     jump() {
-        if(this.canJump) {
+        if (this.canJump) {
             this.velocity.y = this.jumpForce;
             this.jumpTime = 0;
             this.canJump = false;
@@ -109,16 +109,16 @@ export default class Player extends GameObject{
     }
     holdJump() {
         this.acceleration.y = this.jumpGravity;
-        if(this.velocity.y <= this.jumpCutoff) {
+        if (this.velocity.y <= this.jumpCutoff) {
             this.endJump();
             return;
         }
     }
     endJump() {
-        if(this.velocity.y > this.jumpCutoff) {
+        if (this.velocity.y > this.jumpCutoff) {
             this.earlyJumpEnd = true;
         }
-        if(this.fastFalling) {
+        if (this.fastFalling) {
             this.fastFall();
         }
         else {
@@ -135,25 +135,25 @@ export default class Player extends GameObject{
         this.collideObject(objects);
     }
     collideRight() {
-        if(this.position.x + this.radius > this.gameWidth) {
+        if (this.position.x + this.radius > this.gameWidth) {
             this.position.x = this.gameWidth - this.radius;
             this.velocity.x *= -1;
         }
     }
     collideLeft() {
-        if(this.position.x - this.radius <= 0) {
+        if (this.position.x - this.radius <= 0) {
             this.position.x = this.radius;
             this.velocity.x *= -1;
         }
     }
     collideTop() {
-        if(this.position.y > this.gameHeight - this.radius) {
+        if (this.position.y > this.gameHeight - this.radius) {
             this.position.y = this.gameHeight - this.radius;
             this.velocity.y *= -0.5;
         }
     }
     collideGround() {
-        if(this.position.y <= this.groundHeight + this.radius) {
+        if (this.position.y <= this.groundHeight + this.radius) {
             this.position.y = this.groundHeight + this.radius;
             this.velocity.y *= -0.2;
             this.canJump = true;

@@ -2,8 +2,8 @@ import Vector from "../tools/vector.js";
 import GameObject from "./gameObject.js";
 
 export default class Wall extends GameObject {
-    constructor(canvas, x, y, mass, width, color, name) {
-        super(canvas, x, y, mass, name);
+    constructor(canvas, engine, x, y, mass, width, color, name) {
+        super(canvas, engine, x, y, mass, name);
         this.color = color;
         this.width = width;
 

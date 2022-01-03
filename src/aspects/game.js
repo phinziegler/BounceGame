@@ -1,7 +1,7 @@
 import Background from "../gameObjects/background.js";
 import Player from "../gameObjects/player.js";
 import Wall from "../gameObjects/wall.js";
-import InputHandler from "./input.js";
+import PlayerController from "./playerController.js";
 import Render from "./render.js";
 
 export default class GameEngine {
@@ -11,6 +11,7 @@ export default class GameEngine {
 
         this.objects = [];
         this.backgrounds = [];
+        this.groundHeight = 20;
 
         // Loop Variables
         this.lastTime = 0;
@@ -19,20 +20,28 @@ export default class GameEngine {
         this.fps = 0;
         this.frameCount = 20;
         this.paused = false;
-
         this.started = false;
     }
 
+    getObjects() {
+        return this.objects;
+    }
+
+    // INITIALIZE GAME
     init() {
         this.started = true;
         const canvas = this.canvas;
-        const groundHeight = 20;
-        const background = new Background(canvas, groundHeight);
+        const background = new Background(canvas, this, this.groundHeight);
 
         // Detect Spacebar press
         document.addEventListener("keydown", (e) => {
-            if (e.key == " ") {
-                this.togglePause();
+            switch(e.key) {
+                case " ":
+                    this.togglePause();
+                    break;
+                case "b":
+                    this.addBall();
+                    break;
             }
         });
 
@@ -43,43 +52,34 @@ export default class GameEngine {
 
         // Player 1
         let player1 = new Player(
-            this.canvas,                 // canvas
+            this.canvas,            // canvas
+            this,                   // engine
             40,                     // x
             40,                     // y
             1,                      // mass
             30,                     // radius
-            groundHeight,           // groundHeight
+            this.groundHeight,           // groundHeight
             "rgb(255, 100, 100)",   // color
             "player1"               // name
         );
 
-        // Player x
-        let playerx = new Player(
-            this.canvas,                 // canvas
-            40,                     // x
-            600,                    // y
-            .5,                     // mass
-            20,                     // radius
-            groundHeight,           // groundHeight
-            "green",                // color
-            "playerx"               // name
-        );
-
         // Player 2
         let player2 = new Player(
-            this.canvas,                 // canvas
+            this.canvas,            // canvas
+            this,                   // engine
             1460,                   // x
             40,                     // y
             1,                      // mass
             30,                     // radius
-            groundHeight,           // groundHeight
+            this.groundHeight,           // groundHeight
             "rgb(100, 100, 255)",   // color
             "player2"               // name
         );
 
         // Wall
         let wall = new Wall(
-            this.canvas,                 // canvas
+            this.canvas,            // canvas
+            this,                   // engine
             (canvas.width / 2),     // x
             0,                      // y
             10,                     // mass
@@ -93,7 +93,6 @@ export default class GameEngine {
             wall,
             player1,
             player2,
-            playerx,
         ];
 
         // BACKGROUND OBJECTS
@@ -102,7 +101,7 @@ export default class GameEngine {
         ];
 
         // Player 1 Controller
-        new InputHandler(
+        new PlayerController(
             player1,
             "w",            // up
             "a",            // left
@@ -111,15 +110,13 @@ export default class GameEngine {
         );
 
         // Player 2 Controller
-        new InputHandler(
+        new PlayerController(
             player2,
             "ArrowUp",      // up
             "ArrowLeft",    // left
             "ArrowDown",    // down
             "ArrowRight",   // right
         );
-
-        // this.step(0);
     }
 
     // TOGGLE PAUSE
@@ -131,12 +128,27 @@ export default class GameEngine {
         this.paused = true;
     }
 
+    // CreateBall
+    addBall() {
+        this.objects.push(new Player(
+            this.canvas,                                        // canvas
+            this,                                               // engine
+            this.canvas.width * Math.random(),                  // x
+            this.canvas.height,                                 // y
+            .35,                                                // mass
+            15,                                                 // radius
+            this.groundHeight,                                  // groundHeight
+            Render.randomColor(),                               // color
+            "obj" + this.objects.length                         // name
+        ));
+    }
+
     // GAMELOOP
     step(time) {
         let deltaTime = (time - this.lastTime) / 100;
         this.lastTime = time;
 
-        // Physics
+        // Physics --- dont run when game paused
         if (!this.paused) {
             this.objects.forEach(obj => {
                 if (typeof obj.update === "function") {
@@ -144,10 +156,10 @@ export default class GameEngine {
                 }
             });
         }
-            
-            // Render
-            Render.drawObjects(this.objects);
-            Render.drawBackground(this.backgrounds);
+
+        // Render
+        Render.drawObjects(this.objects);
+        Render.drawBackground(this.backgrounds);
 
         // Render Pause
         if (this.paused) {

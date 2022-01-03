@@ -1,4 +1,4 @@
-export default class InputHandler {
+export default class PlayerController {
     constructor(player, up, left, down, right) {
         
         //KEYDOWN

@@ -1,8 +1,8 @@
 import GameObject from "./gameObject.js";
 
 export default class Background extends GameObject {
-    constructor(canvas, height) {
-        super(canvas, 0, canvas.height - height);
+    constructor(canvas, engine, height) {
+        super(canvas, engine, 0, canvas.height - height);
     }
 
     draw() {

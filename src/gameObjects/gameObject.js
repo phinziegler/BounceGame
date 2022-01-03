@@ -2,7 +2,8 @@ import Vector from "../tools/vector.js";
 
 // Abstract Version of a Game Object
 export default class GameObject {
-    constructor(canvas, x, y, mass, name) {
+    constructor(canvas, engine, x, y, mass, name) {
+        this.canvas = canvas;
         this.gameWidth = canvas.width;
         this.gameHeight = canvas.height;
         this.ctx = canvas.getContext("2d");
@@ -11,6 +12,7 @@ export default class GameObject {
         this.acceleration = new Vector(0, 0);
         this.mass = mass;
         this.name = name;
+        this.engine = engine;
     }
 
     get mass() {

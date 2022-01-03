@@ -1,9 +1,9 @@
 # BounceGame
 [Click here!](https://phinziegler.github.io/BounceGame/)<br>
-This is a work in progress.
-I don't even know what it will be yet, but it'll be something.
+This is a work in progress.<br>
+At this moment it is just a simple physics and render engine.
 
 ## To Do
-1. Rework the background object into a generic Background class, and change background.js into floor.js
-2. Make friction be a function of deltaTime.
-3. Make the game an actual game.
+1. Change all collisions to generic object collisions --- use active and passive objects and get rid of basic ground/wall/ceiling collisions
+2. Make collision detection continuous.
+2. Make friction be a function of deltaTime. (say for example, every second the ball should lose 10% of its velocity?)
