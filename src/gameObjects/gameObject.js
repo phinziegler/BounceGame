@@ -140,7 +140,6 @@ export default class GameObject {
         throw new Error("distanceParameter() unimplemented");
     }
 
-
     // Returns the normal vector of a collision (points in the direction a colliding object should move to escape contact)
     surfaceNormalTo(obj) {
         let pos = this.positionRelativeTo(obj);
