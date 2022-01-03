@@ -90,7 +90,6 @@ export default class GameObject {
         let m1 = this.mass;
         let m2 = obj.mass;
 
-
         // 1 find unit normal and unit tangent vectors
         let norm = obj.surfaceNormalTo(this);
         let tan = new Vector(-norm.y, norm.x);
