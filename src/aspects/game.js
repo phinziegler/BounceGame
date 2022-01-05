@@ -12,7 +12,7 @@ export default class GameEngine {
 
         this.objects = [];
         this.backgrounds = [];
-        this.groundHeight = 20;
+        this.groundHeight = 30;
         this.toDraw = [];
 
         this.goalDist = canvas.width / 2;
@@ -191,7 +191,7 @@ export default class GameEngine {
 
             // Render
             Render.draw(this.toDraw);
-            Render.score(50, this.leftWin, this.rightWin, this.score, 600, 30,2);
+            Render.score(790, this.leftWin, this.rightWin, this.score, 1550, 37, 2);
 
             // Render Pause
             if (this.paused) {
