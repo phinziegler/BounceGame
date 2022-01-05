@@ -15,14 +15,14 @@ export default class GameEngine {
         this.groundHeight = 20;
         this.toDraw = [];
 
-        this.goalDist = 200;
+        this.goalDist = canvas.width / 2;
 
         this.leftTime = 0;
         this.rightTime = 0;
 
-        this.score = 1;
-        this.leftWin = 0;
-        this.rightWin = 2;
+        // this.score = 1;
+        // this.leftWin = 0;
+        // this.rightWin = 2;
 
         // Loop Variables
         this.lastTime = 0;
@@ -40,6 +40,10 @@ export default class GameEngine {
 
     // INITIALIZE GAME
     init() {
+        this.leftWin = 0;
+        this.rightWin = 10;
+        this.score = this.rightWin / 2;
+
         this.started = true;
         const canvas = this.canvas;
         let ground = new Ground(this.canvas, this.groundHeight, 3, "black", "grey");
@@ -187,7 +191,7 @@ export default class GameEngine {
 
             // Render
             Render.draw(this.toDraw);
-            Render.score(50, 0, 2, this.score, 600, 30,2);
+            Render.score(50, this.leftWin, this.rightWin, this.score, 600, 30,2);
 
             // Render Pause
             if (this.paused) {

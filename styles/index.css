@@ -19,8 +19,30 @@ body {
 
 #canvas {
     display: block;
-    margin: auto;
+    margin: 10px auto 10px auto;
     line-height: 0;
+}
+
+#reset {
+    font-family: monospace;
+    background-color: rgb(94, 94, 94);
+    width: 150px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.3rem;
+    padding: 5px;
+    margin-top: 20px;
+    border-radius: 10px;
+
+    border-top: 2px inset rgba(255, 255, 255, .6);
+    border-left: 2px inset rgba(255, 255, 255, .6);
+    border-bottom: 2px inset rgba(0, 0, 0, .4);
+    border-right: 2px inset rgba(0, 0, 0, .4);
+    /* transition: background-color 0.2s; */
+}
+#reset:hover {
+    background-color: rgb(78, 78, 78);
 }
 
 /* PANEL OPEN/CLOSE BUTTON */

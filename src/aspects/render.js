@@ -81,7 +81,7 @@ export default class Render {
     }
 
     static score(yDisp, min, max, score, width, height, borderWidth) {
-        let ratio = score / (max - min);
+        let ratio = score / (max);
         let radius = height / 2;
         let middle = canvas.width / 2;
         let leftStart = middle - (width / 2);
