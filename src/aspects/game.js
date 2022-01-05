@@ -1,4 +1,4 @@
-import Background from "../gameObjects/background.js";
+import Ground from "../backgrounds/ground.js";
 import Player from "../gameObjects/player.js";
 import Wall from "../gameObjects/wall.js";
 import PlayerController from "./playerController.js";
@@ -31,7 +31,7 @@ export default class GameEngine {
     init() {
         this.started = true;
         const canvas = this.canvas;
-        const background = new Background(canvas, this, this.groundHeight);
+        const ground = new Ground(this.canvas, this.groundHeight, 3, "black", "grey");
 
         // Detect Spacebar press
         document.addEventListener("keydown", (e) => {
@@ -97,7 +97,7 @@ export default class GameEngine {
 
         // BACKGROUND OBJECTS
         this.backgrounds = [
-            background,
+            ground,
         ];
 
         // Player 1 Controller
