@@ -1,3 +1,4 @@
+import Goal from "../backgrounds/goal.js";
 import Ground from "../backgrounds/ground.js";
 import Player from "../gameObjects/player.js";
 import Wall from "../gameObjects/wall.js";
@@ -12,6 +13,16 @@ export default class GameEngine {
         this.objects = [];
         this.backgrounds = [];
         this.groundHeight = 20;
+        this.toDraw = [];
+
+        this.goalDist = 200;
+
+        this.leftTime = 0;
+        this.rightTime = 0;
+
+        this.score = 1;
+        this.leftWin = 0;
+        this.rightWin = 2;
 
         // Loop Variables
         this.lastTime = 0;
@@ -31,11 +42,13 @@ export default class GameEngine {
     init() {
         this.started = true;
         const canvas = this.canvas;
-        const ground = new Ground(this.canvas, this.groundHeight, 3, "black", "grey");
+        let ground = new Ground(this.canvas, this.groundHeight, 3, "black", "grey");
+        let goalLeft = new Goal(this.canvas, this.goalDist, -1, "rgba(255,100,100,.25)");
+        let goalRight = new Goal(this.canvas, canvas.width - this.goalDist, 1, "rgba(100,100,255,.25)");
 
         // Detect Spacebar press
         document.addEventListener("keydown", (e) => {
-            switch(e.key) {
+            switch (e.key) {
                 case " ":
                     this.togglePause();
                     break;
@@ -82,6 +95,8 @@ export default class GameEngine {
             this,                   // engine
             (canvas.width / 2),     // x
             0,                      // y
+            this.goalDist,
+            canvas.width - this.goalDist,
             10,                     // mass
             25,                     // width
             "rgb(100,100,100)",     // color
@@ -98,6 +113,16 @@ export default class GameEngine {
         // BACKGROUND OBJECTS
         this.backgrounds = [
             ground,
+            goalLeft,
+        ];
+
+        this.toDraw = [
+            goalLeft,
+            goalRight,
+            wall,
+            ground,
+            player1,
+            player2,
         ];
 
         // Player 1 Controller
@@ -130,7 +155,7 @@ export default class GameEngine {
 
     // CreateBall
     addBall() {
-        this.objects.push(new Player(
+        let ball = new Player(
             this.canvas,                                        // canvas
             this,                                               // engine
             this.canvas.width * Math.random(),                  // x
@@ -140,7 +165,9 @@ export default class GameEngine {
             this.groundHeight,                                  // groundHeight
             Render.randomColor(),                               // color
             "obj" + this.objects.length                         // name
-        ));
+        );
+        this.objects.push(ball);
+        this.toDraw.push(ball);
     }
 
     // GAMELOOP
@@ -148,25 +175,28 @@ export default class GameEngine {
         let deltaTime = (time - this.lastTime) / 100;
         this.lastTime = time;
 
-        // Physics --- dont run when game paused
-        if (!this.paused) {
-            this.objects.forEach(obj => {
-                if (typeof obj.update === "function") {
-                    obj.update(deltaTime, this.objects);
-                }
-            });
+        if (this.started) {
+            // Physics --- dont run when game paused
+            if (!this.paused) {
+                this.objects.forEach(obj => {
+                    if (typeof obj.update === "function") {
+                        obj.update(deltaTime, this.objects);
+                    }
+                });
+            }
+
+            // Render
+            Render.draw(this.toDraw);
+            Render.score(50, 0, 2, this.score, 600, 30,2);
+
+            // Render Pause
+            if (this.paused) {
+                Render.pause();
+            }
+
+
         }
-
-        // Render
-        Render.drawObjects(this.objects);
-        Render.drawBackground(this.backgrounds);
-
-        // Render Pause
-        if (this.paused) {
-            Render.pause();
-        }
-
-        if (!this.started) {
+        else {
             Render.preRender();
         }
 
@@ -179,6 +209,34 @@ export default class GameEngine {
             this.counter = 0;
         }
         Render.fps("FPS: " + this.fps.toFixed(1), 14, "rgba(0, 0, 0, .5)");
+    }
+
+    goalRight(deltaTime) {
+        if(!this.paused) {
+            this.score += (deltaTime / 10);
+        }
+        if (this.score >= this.rightWin) {
+            this.rightLose();
+            this.score = this.rightWin;
+
+        }
+    }
+    goalLeft(deltaTime) {
+        if(!this.paused) {
+            this.score -= (deltaTime / 10);
+        }
+        if (this.score <= this.leftWin) {
+            this.leftLose();
+            this.score = this.leftWin;
+        }
+    }
+
+    rightLose() {
+        console.log("Left Wins!")
+    }
+
+    leftLose() {
+        console.log("Right Wins!")
     }
 
 }

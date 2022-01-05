@@ -7,20 +7,17 @@ export default class Render {
     constructor() {
     }
     static preRender() {
+        ctx.fillStyle = "rgba(190,190,190,1)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "black";
         ctx.font = "25px monospace";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText("press any key to start", canvas.width / 2, canvas.height / 2);
     }
-    static drawObjects(objectList) {
+    static draw(objectList) {
         ctx.fillStyle = "rgba(190,190,190,1)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        objectList.forEach(object => {
-            object.draw();
-        });
-    }
-    static drawBackground(objectList) {
         objectList.forEach(object => {
             object.draw();
         });
@@ -81,6 +78,47 @@ export default class Render {
         };
         const result = `${f(0)}${f(8)}${f(4)}`;
         return result;
+    }
+
+    static score(yDisp, min, max, score, width, height, borderWidth) {
+        let ratio = score / (max - min);
+        let radius = height / 2;
+        let middle = canvas.width / 2;
+        let leftStart = middle - (width / 2);
+        let rightStart = middle + (width / 2);
+        // let position = leftStart;
+        let position = (ratio * width) + leftStart;
+
+        ctx.fillStyle = "rgba(0,0,0,.7)";
+        ctx.beginPath();
+        ctx.arc(leftStart, yDisp, radius, Math.PI / 2, 3 * (Math.PI / 2));    // draw circle
+        ctx.arc(rightStart, yDisp, radius, 3 * (Math.PI / 2), Math.PI / 2);
+        ctx.closePath();
+        ctx.fill();
+
+        // ctx.fillStyle = "black";
+        // const centerWidth = 4;
+        // ctx.fillRect(position - (centerWidth / 2), yDisp - radius + borderWidth, centerWidth, height - (2 * borderWidth));
+
+        ctx.fillStyle = "rgba(255, 100, 100, .8)";
+        ctx.beginPath();
+        ctx.arc(leftStart, yDisp, radius - (1 * borderWidth), Math.PI / 2, 3 * (Math.PI / 2));    // draw circle
+        ctx.lineTo(position, yDisp - radius + borderWidth);
+        ctx.lineTo(position, yDisp + radius - borderWidth);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = "rgba(100,100,255, .8)";
+        ctx.beginPath();
+        ctx.arc(rightStart, yDisp, radius - (1 * borderWidth), 3 * (Math.PI / 2), Math.PI / 2);;    // draw circle
+        ctx.lineTo(position, yDisp + radius - borderWidth);
+        ctx.lineTo(position, yDisp - radius + borderWidth);
+        ctx.closePath();
+        ctx.fill();
+        // ctx.arc(rightStart, yDisp, radius - (2 * borderWidth), 3 * (Math.PI / 2), Math.PI / 2);
+        // ctx.closePath();
+        // ctx.fill();
+
     }
 
 }
