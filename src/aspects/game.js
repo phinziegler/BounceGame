@@ -191,7 +191,7 @@ export default class GameEngine {
 
             // Render
             Render.draw(this.toDraw);
-            Render.score(790, this.leftWin, this.rightWin, this.score, 1550, 37, 2);
+            Render.score(791, this.leftWin, this.rightWin, this.score, canvas.width, 37, 0);
 
             // Render Pause
             if (this.paused) {
